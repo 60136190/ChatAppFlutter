@@ -37,6 +37,8 @@ dependencies:
   http: ^0.13.4
   shared_preferences: ^2.0.13
   toggle_switch: ^1.4.0
+  carousel_slider: ^4.0.0
+  smooth_page_indicator: ^1.0.0+2
 
   # toast in flutter
   fluttertoast: ^8.0.9
