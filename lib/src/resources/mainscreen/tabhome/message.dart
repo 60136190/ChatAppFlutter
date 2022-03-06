@@ -33,22 +33,35 @@ class MessageScreen extends StatelessWidget {
                     showCupertinoModalPopup<void>(
                       context: context,
                       builder: (BuildContext context) => CupertinoActionSheet(
-                        title: const Text('Title'),
-                        message: const Text('Message'),
                         actions: <CupertinoActionSheetAction>[
                           CupertinoActionSheetAction(
-                            child: const Text('Action One'),
+                            child: const Text('お気に入りに追加', style: TextStyle(color: Colors.black, fontSize: 20),),
                             onPressed: () {
                               Navigator.pop(context);
+                              _showAddFavoriteDialog(context);
                             },
                           ),
                           CupertinoActionSheetAction(
-                            child: const Text('Action Two'),
+                            child: const Text('このユーザーを報告する', style: TextStyle(color: Colors.black, fontSize: 20),),
                             onPressed: () {
                               Navigator.pop(context);
+                              _showReportDialog(context);
                             },
-                          )
+                          ),
+                          CupertinoActionSheetAction(
+                            child: const Text('このユーザーをブロックする', style: TextStyle(color: Colors.black, fontSize: 20),),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              _showBlockDialog(context);
+                            },
+                          ),
                         ],
+                        cancelButton: CupertinoActionSheetAction(
+                          child: Text('キャンセル', style: TextStyle(color: kPink, fontSize: 20),),
+                          onPressed: () => {
+                            Navigator.pop(context),
+                          },
+                        ),
                       ),
                     )
                   },
@@ -169,10 +182,10 @@ class InputMessage extends StatelessWidget {
                   height: 40,
                   child: TextField(
                     decoration: InputDecoration(
-                        hintText: 'メッセージを送る',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(3)),
-                        )),
+                      border: InputBorder.none,
+                        fillColor: Colors.white, filled: true,
+                        hintText: 'メッセージを送る', hintStyle: TextStyle(color: Colors.black12)
+                       ),
                   ),
                 )),
             SizedBox(
@@ -230,7 +243,7 @@ class InforUser extends StatelessWidget {
                 children: [
                   Text(
                     'Kimbinh',
-                    style: TextStyle(color: kIconColor, fontSize: 13),
+                    style: TextStyle(color: kPink, fontSize: 13),
                   ),
                   Text(
                     '20-24 years old',
@@ -293,6 +306,78 @@ void _showCupertinoDialog(BuildContext context) {
               },
               child: Text('購入ページ', style: TextStyle(color: Colors.black)),
             ),
+          ],
+        );
+      });
+}
+
+// dialog add favorite
+void _showAddFavoriteDialog(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text('お気に入りに追加', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),),
+          content: Text('お気に入りに追加', style: TextStyle(color: Colors.black, fontSize: 15),),
+          actions: [
+            CupertinoDialogAction(child: Text('はい', style: TextStyle(fontWeight: FontWeight.bold),), onPressed: ()=>{
+              Navigator.pop(context),
+            },)
+          ],
+        );
+      });
+}
+
+// dialog report
+void _showReportDialog(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text('レポートの内容は、24時間以内に運用チームによって確認されます。', style: TextStyle(color: Colors.black, fontSize: 15),),
+          content: Card(
+            elevation: 0.0,
+            child: Column(
+              children: <Widget>[
+                TextField(
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      fillColor: Colors.black12, filled: true,
+                      hintText: 'メッセージを送る', hintStyle: TextStyle(color: Colors.black, fontSize: 12)
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            CupertinoDialogAction(child: Text('はい'), onPressed: ()=> {
+              Navigator.pop(context)
+            },),
+            CupertinoDialogAction(child: Text('いいえ'), onPressed: () => {
+              Navigator.pop(context)
+            },),
+          ],
+        );
+      });
+}
+
+// dialog block
+void _showBlockDialog(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text('ブロックする', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),),
+          content:  Row(
+                  children: <Widget>[
+                    Container(child:Text('thainam'), margin: EdgeInsets.only(left: 50),),
+                    Container(child: Text('ブロックされた')),
+                  ],
+          ),
+          actions: [
+            CupertinoDialogAction(child: Text('はい', style: TextStyle(fontWeight: FontWeight.bold),), onPressed: () => {
+              Navigator.pop(context)
+            },)
           ],
         );
       });
