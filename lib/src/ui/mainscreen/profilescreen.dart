@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:task1/src/constants/constants.dart';
-import 'package:task1/src/resources/mainscreen/addscreen.dart';
-import 'package:task1/src/resources/secondscreen.dart';
 import 'package:task1/src/ui/profile/change_profile.dart';
 import 'package:task1/src/ui/profile/confirmfavorite.dart';
 import 'package:task1/src/ui/profile/foot.dart';
 import 'package:task1/src/ui/profile/setting.dart';
+import 'package:task1/src/ui/secondscreen.dart';
 
 import 'tabhome/leadingaddscreen.dart';
 

@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:task1/src/constants/constants.dart';
-import 'package:task1/src/resources/mainscreen/tabhome/leadingaddscreen.dart';
-
-import '../chatmessage.dart';
+import 'package:task1/src/ui/mainscreen/chatmessage.dart';
+import 'package:task1/src/ui/mainscreen/tabhome/leadingaddscreen.dart';
 
 class MessageScreen extends StatefulWidget{
   @override
