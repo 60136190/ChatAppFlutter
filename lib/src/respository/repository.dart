@@ -16,7 +16,4 @@ abstract class Resposirory{
 
   Future<List<Age>> getSex();
 
-  // Future<List<Age>> getArea();
-
-
 }

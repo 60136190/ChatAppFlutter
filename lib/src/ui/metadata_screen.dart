@@ -49,8 +49,7 @@ class _MetaDataScreen extends State<MetaDataScreen> {
                       return Center(child: CircularProgressIndicator());
                     }
                     if (snapshot.hasError) {
-                      return Center(child: Text('error'));
-                    }
+                      return Center(child: Text('error'));}
                     return ListView.separated(
                         itemBuilder: (context, index) {
                           var profile = snapshot.data?[index];

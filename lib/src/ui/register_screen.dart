@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task1/src/constants/constants.dart';
+import 'package:task1/src/models/login_model.dart';
 import 'package:task1/src/models/register_model.dart';
 import 'package:task1/src/ui/mainscreen/mainscreen.dart';
 import 'secondscreen.dart';
@@ -36,7 +37,7 @@ class _Registers extends State<Registers> {
   // function register --------------------
   String registerUrl = "http://59.106.218.175:8086/";
 
-  Future<RegisterModel> postRegister (
+  Future<RegisterModel> postRegister(
       String displayname, area, sex, age, city, password) async {
     final prefs = await SharedPreferences.getInstance();
     String? device_id_android = prefs.getString('device_id_android');
@@ -61,18 +62,65 @@ class _Registers extends State<Registers> {
     // if status code == 200 , so change screen
     if (response.statusCode == 200) {
       final String responseString = response.body;
+      var resBody = json.decode(response.body);
+      var  resUser_code = resBody["data"]["user_code"];
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('user_code', resUser_code);
       return registerFromJson(responseString);
     } else {
       return null!;
     }
   }
 
+  // function login --------------------
+  String loginUrl = "http://59.106.218.175:8086/";
+  Future<LoginModel> postLogin() async {
+    const _chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    Random _rnd = Random();
+    String getRandomString(int length) =>
+        String.fromCharCodes(Iterable.generate(
+            length,
+                (_) => _chars
+                .codeUnitAt(_rnd.nextInt(_chars.length))));
+    final password = getRandomString(8);
+    final prefs = await SharedPreferences.getInstance();
+    String? device_id_android = prefs.getString('device_id_android');
+    String? user_code = prefs.getString('user_code');
+    var url = Uri.parse('$registerUrl/api/login/index');
+    var responseLogin = await http.post(url, headers: {
+      "X-DEVICE-ID": "$device_id_android",
+      "X-OS-TYPE": "android",
+      "X-OS-VERSION": "11",
+      "X-APP-VERSION": "1.0.16",
+      "X-API-ID": "API-ID-PARK-CALL-DEV",
+      "X-API-KEY": "API-KEY-PARK-CALL-DEV",
+      "X-DEVICE-NAME": "RMX3262",
+    }, body: {
+      "user_code": user_code,
+      "password": password
+    });
+    if (responseLogin.statusCode == 200) {
+      final String response = responseLogin.body;
+      var resBodyLogin = json.decode(responseLogin.body);
+      var token = resBodyLogin['data']['token'];
+      prefs.setString('token', token);
+      print('abcdef$resBodyLogin');
+      _navigatetohome();
+      return loginModelFromJson(response);
+    } else {
+      return null!;
+    }
+  }
+
+  // function register --------------------
+
   //--------------------
   // final bloc = RegisterBloc();
   // final deviceTransferFormKey = GlobalKey<FormState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool? isChecked_age =true;
+  bool? isChecked_age = true;
   bool? isChecked_confirm = true;
   TextEditingController _displayname = TextEditingController();
 
@@ -202,11 +250,11 @@ class _Registers extends State<Registers> {
                       size: 20,
                     ),
                     items: dataArea.map((item) {
-                          return new DropdownMenuItem(
-                            child: new Text(item['name']),
-                            value: item['value'].toString(),
-                          );
-                        }).toList(),
+                      return new DropdownMenuItem(
+                        child: new Text(item['name']),
+                        value: item['value'].toString(),
+                      );
+                    }).toList(),
                     onChanged: (newArea) {
                       setState(() {
                         _myArea = newArea;
@@ -252,7 +300,7 @@ class _Registers extends State<Registers> {
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(10)))),
+                                BorderRadius.all(Radius.circular(10)))),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '情報を入力してください';
@@ -317,9 +365,11 @@ class _Registers extends State<Registers> {
                       //       MaterialPageRoute(builder: (context) => MainScreen()));
                       //   _displayname.clear();
                       // }
-                      if((_formKey.currentState!.validate() && isChecked_age != true || isChecked_confirm != true) ){
+                      if ((_formKey.currentState!.validate() &&
+                              isChecked_age != true ||
+                          isChecked_confirm != true)) {
                         _showCupertinoDialog(context);
-                      }else {
+                      } else {
                         final String displayname = _displayname.text;
                         final String area = _myArea!;
                         final String sex = _mySex!;
@@ -331,10 +381,8 @@ class _Registers extends State<Registers> {
                         String getRandomString(int length) =>
                             String.fromCharCodes(Iterable.generate(
                                 length,
-                                    (_) =>
-                                    _chars
-                                        .codeUnitAt(
-                                        _rnd.nextInt(_chars.length))));
+                                (_) => _chars
+                                    .codeUnitAt(_rnd.nextInt(_chars.length))));
                         final password = getRandomString(8);
 
                         RegisterModel data = await postRegister(
@@ -342,8 +390,8 @@ class _Registers extends State<Registers> {
                         setState(() {
                           _register = data;
                         });
-
-                        _navigatetohome();
+                        postLogin();
+                        // _navigatetohome();
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -373,7 +421,6 @@ class _Registers extends State<Registers> {
 
   String? _myArea;
   List dataArea = [];
-
 
   String sexurl = "http://59.106.218.175:8086";
 

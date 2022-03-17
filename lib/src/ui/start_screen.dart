@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task1/src/constants/constants.dart';
+import 'package:task1/src/ui/mainscreen/mainscreen.dart';
 import 'package:task1/src/ui/register_screen.dart';
 
 class StartScreen extends StatefulWidget {
@@ -23,8 +24,14 @@ class _StartScreen extends State<StartScreen> {
     _navigatetohome();
   }
   _navigatetohome() async{
-    await Future.delayed(Duration(milliseconds: 10000), () {});
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Registers()));
+    await Future.delayed(Duration(milliseconds: 5000), () {});
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    if(token != null){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+    }else{
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Registers()));
+    }
   }
 
   // // get id device
