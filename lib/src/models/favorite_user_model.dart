@@ -10,16 +10,16 @@ String favoriteUserModelToJson(FavoriteUserModel data) => json.encode(data.toJso
 
 class FavoriteUserModel {
   FavoriteUserModel({
-    this.code,
-    this.status,
-    this.message,
-    this.data,
+    required this.code,
+    required this.status,
+    required this.message,
+    required this.data,
   });
 
-  int? code;
-  String? status;
-  String? message;
-  String? data;
+  int code;
+  String status;
+  String message;
+  String data;
 
   factory FavoriteUserModel.fromJson(Map<String, dynamic> json) => FavoriteUserModel(
     code: json["code"],
