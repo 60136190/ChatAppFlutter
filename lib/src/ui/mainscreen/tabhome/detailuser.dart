@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -14,6 +15,7 @@ import 'package:task1/src/models/metadata_model.dart';
 import 'package:task1/src/models/report_user_model.dart';
 import 'package:task1/src/respository/meta_data_respository.dart';
 import 'package:task1/src/ui/mainscreen/mainscreen.dart';
+import 'package:task1/src/ui/profile/change_profile.dart';
 
 import 'message.dart';
 
@@ -43,8 +45,8 @@ Future<FavoriteUserModel?> addFavorite(String id, code, type) async {
         "X-DEVICE-NAME": "RMX3262",
       },
       body: {
-        "token": token,
-        "favorites  _id": id,
+        "token": token.toString(),
+        "favorites_id": id,
         "favorites_user_code": code,
         "type": type,
       });
@@ -120,6 +122,8 @@ Future<BlockUserModel?> blockUser(String id, lock_user_code) async {
 }
 
 class _DetailScreen extends State<DetailScreen> {
+  // List? data;
+  List image = [];
 
   bool? isAddFavorite;
   FavoriteUserModel? favoriteUserModel;
@@ -129,26 +133,19 @@ class _DetailScreen extends State<DetailScreen> {
   void initState() {
     super.initState();
     futureDetailUser = getDetailUser();
+    getDetailUser();
   }
+
   String? textReport;
-  String? textFavorite = "お気に入りに追加";
+  String? textFavorite;
   String? type;
   TextEditingController _reportContronller = TextEditingController();
 
   late Future<DetailUserModel> futureDetailUser;
-
   final controller = CarouselController();
-
   int activeIndex = 0;
-  final images = [
-    'https://images.unsplash.com/photo-1586882829491-b81178aa622e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
-    'https://images.unsplash.com/photo-1586871608370-4adee64d1794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2862&q=80',
-    'https://images.unsplash.com/photo-1586901533048-0e856dff2c0d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',
-    'https://images.unsplash.com/photo-1586902279476-3244d8d18285?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
-    'https://images.unsplash.com/photo-1586943101559-4cdcf86a6f87?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1556&q=80',
-    'https://images.unsplash.com/photo-1586951144438-26d4e072b891?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',
-    'https://images.unsplash.com/photo-1586953983027-d7508a64f4bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',
-  ];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -168,10 +165,63 @@ class _DetailScreen extends State<DetailScreen> {
             String? favorites_user_code = snapshot.data!.data!.userCode;
             int? favorites_status = snapshot.data!.data!.favoriteStatus;
 
+            String? imagea = snapshot.data!.data!.image![0];
+            String? imageb = snapshot.data!.data!.image![1];
+            String? imagec = snapshot.data!.data!.image![2];
+            image = [imagea,imageb,imagec];
+
+            //----------------- border color image-----------
+            Color getColor (int color) {
+              var _color = Colors.white;
+              switch(color) {
+                case 0: {
+                  _color = kPurple;
+                }
+                break;
+                default: {
+                  _color = Colors.white;
+                }
+                break;
+              }
+              return _color;
+            }
+
+            Color getColob (int color) {
+              var _color = Colors.white;
+              switch(color) {
+                case 1: {
+                  _color = kPurple;
+                }
+                break;
+                default: {
+                  _color = Colors.white;
+                }
+                break;
+              }
+              return _color;
+            }
+
+            Color getColorc (int color) {
+              var _color = Colors.white;
+              switch(color) {
+                case 2: {
+                  _color = kPurple;
+                }
+                break;
+                default: {
+                  _color = Colors.white;
+                }
+                break;
+              }
+              return _color;
+            }
+            // ---------------------------
+
+            print('aaaaaaaaaaaaaaaaa${snapshot.data!.data!.image![0]}');
             if (favorites_status == 1) {
               textFavorite = "お気に入り解除";
               type = "0";
-            } else {
+            }else{
               textFavorite = "お気に入りに追加";
               type = "1";
             }
@@ -207,18 +257,18 @@ class _DetailScreen extends State<DetailScreen> {
                                   actions: <CupertinoActionSheetAction>[
                                     CupertinoActionSheetAction(
                                       child: Text(
-                                        textFavorite!,
+                                        textFavorite.toString(),
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 20),
                                       ),
                                       onPressed: () async {
-                                        final FavoriteUserModel? user =
+                                        final FavoriteUserModel? favoriteModel =
                                         await addFavorite(
                                             favorites_id.toString(),
                                             favorites_user_code.toString(),
                                             type.toString());
                                         setState(() {
-                                          favoriteUserModel = user;
+                                          favoriteUserModel = favoriteModel;
 
                                           if (type.toString() == "0") {
                                             _showRemoveFavoriteDialog(context);
@@ -227,6 +277,7 @@ class _DetailScreen extends State<DetailScreen> {
                                           if (type.toString() == "1") {
                                             _showAddFavoriteDialog(context);
                                           }
+
                                         });
                                         // Navigator.pop(context);
                                         // _showAddFavoriteDialog(context);
@@ -239,10 +290,10 @@ class _DetailScreen extends State<DetailScreen> {
                                             color: Colors.black, fontSize: 20),
                                       ),
                                       onPressed: () async  {
-                                         Navigator.pop(context);
-                                         _showReportDialog(
-                                             context, favorites_id.toString(),
-                                             favorites_user_code.toString());
+                                        Navigator.pop(context);
+                                        _showReportDialog(
+                                            context, favorites_id.toString(),
+                                            favorites_user_code.toString());
                                       },
                                     ),
                                     CupertinoActionSheetAction(
@@ -287,6 +338,10 @@ class _DetailScreen extends State<DetailScreen> {
                   child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          // UsrProfileCarousel(
+                          //   profile: profile,
+                          //   userProfileBloc: bloc,
+                          // ),
                           // Container(
                           //   child: Image.network(
                           //       'https://i.pinimg.com/564x/d6/44/ed/d644edeac88bf33567103ec63c83db66.jpg'),
@@ -299,18 +354,14 @@ class _DetailScreen extends State<DetailScreen> {
                                 viewportFraction: 1,
                                 reverse: true,
                                 initialPage: 0,
-                                // autoPlayInterval: Duration(seconds: 2),
-                                // autoPlay: true,
-                                // enlargeCenterPage: true,
-                                // enlargeStrategy: CenterPageEnlargeStrategy.height,
                                 height: 400,
                                 onPageChanged: (index, reason) =>
                                     setState(() => activeIndex = index),
                               ),
-                              itemCount: images.length,
+                              itemCount: image.length,
                               itemBuilder: (context, index, realIndex) {
-                                final image = images[index];
-                                return buildImage(image, index);
+                                final im = image[index];
+                                return buildImage(im, index);
                               },
                             ),
                             Row(
@@ -396,41 +447,64 @@ class _DetailScreen extends State<DetailScreen> {
                                       child: Row(
                                         children: [
                                           Expanded(
-                                              flex: 3,
-                                              child: CircleAvatar(
-                                                radius: 30.0,
-                                                backgroundImage: NetworkImage(
-                                                    'https://image-us.24h.com.vn/upload/4-2019/images/2019-11-14/1573703027-181-0-1573688811-width650height365.jpg'),
-                                                backgroundColor: Colors
-                                                    .transparent,
-                                              )),
+                                            flex: 3,
+                                            child: Container(
+                                              width: 60.0,
+                                              height: 55.0,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: NetworkImage(imagea),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                borderRadius: BorderRadius.all( Radius.circular(60.0)),
+                                                border: Border.all(
+                                                  color: getColor(activeIndex),
+                                                  width: 2.0,
+                                                ),
+                                              ),
+                                            ),),
                                           Spacer(),
                                           Expanded(
-                                              flex: 3,
-                                              child: CircleAvatar(
-                                                radius: 30.0,
-                                                backgroundImage: NetworkImage(
-                                                    'https://image-us.24h.com.vn/upload/4-2019/images/2019-11-14/1573703027-181-0-1573688811-width650height365.jpg'),
-                                                backgroundColor: Colors
-                                                    .transparent,
-                                              )),
+                                            flex: 3,
+                                            child: Container(
+                                              width: 60.0,
+                                              height: 55.0,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: NetworkImage(imageb),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                borderRadius: BorderRadius.all( Radius.circular(60.0)),
+                                                border: Border.all(
+                                                  color: getColob(activeIndex),
+                                                  width: 2.0,
+                                                ),
+                                              ),
+                                            ),),
                                           Spacer(),
                                           Expanded(
-                                              flex: 3,
-                                              child: CircleAvatar(
-                                                radius: 30.0,
-                                                backgroundImage: NetworkImage(
-                                                    'https://image-us.24h.com.vn/upload/4-2019/images/2019-11-14/1573703027-181-0-1573688811-width650height365.jpg'),
-                                                backgroundColor: Colors
-                                                    .transparent,
-                                              )),
+                                            flex: 3,
+                                            child: Container(
+                                              width: 60.0,
+                                              height: 55.0,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: NetworkImage(imagec),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                borderRadius: BorderRadius.all( Radius.circular(60.0)),
+                                                border: Border.all(
+                                                  color: getColorc(activeIndex),
+                                                  width: 2.0,
+                                                ),
+                                              ),
+                                            ),),
                                         ],
                                       ))
                                 ],
                               )),
 
-                          favoriteUserModel == null ? Container() : Text(
-                              "hmmmm"),
+                          favoriteUserModel == null ? Container() : Text("hmmmm"),
                           blockUserModel == null ? Container() : Text("hmmmm"),
 
                           Align(
@@ -1019,7 +1093,7 @@ class _DetailScreen extends State<DetailScreen> {
   Widget buildIndicator() =>
       AnimatedSmoothIndicator(
         activeIndex: activeIndex,
-        count: images.length,
+        count: image.length,
         effect: SlideEffect(dotHeight: 7, dotWidth: 7),
       );
 
@@ -1050,6 +1124,13 @@ class _DetailScreen extends State<DetailScreen> {
     if (responseGetDetailUser.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
+      var fetchData = jsonDecode(responseGetDetailUser.body);
+      // setState(() {
+      //   data = fetchData;
+      //   data!.forEach((element) {
+      //     imagesUrl.add(element['image']);
+      //   });
+      //   });
       return DetailUserModel.fromJson(jsonDecode(responseGetDetailUser.body));
     } else {
       // If the server did not return a 200 OK response,
@@ -1063,23 +1144,23 @@ class _DetailScreen extends State<DetailScreen> {
         context: context,
         builder: (context) {
           return  CupertinoAlertDialog(
-                  content: Text(
-                    '管理者に通報しました。通報された内容は２４時間以内に運用チームが確認します。',
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 13),
-                  ),
-                  actions: [
-                    CupertinoDialogAction(
-                      child: Text(
-                        'はい',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () => {Navigator.pop(context)},
-                    )
-                  ],
-                );
-            }
+            content: Text(
+              '管理者に通報しました。通報された内容は２４時間以内に運用チームが確認します。',
+              style: TextStyle(
+                  color: Colors.black, fontSize: 13),
+            ),
+            actions: [
+              CupertinoDialogAction(
+                child: Text(
+                  'はい',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onPressed: () => {Navigator.pop(context)},
+              )
+            ],
           );
+        }
+    );
   }
 
 
@@ -1225,8 +1306,6 @@ void _showRemoveFavoriteDialog(BuildContext context) {
         );
       });
 }
-
-
 
 // dialog block
 void _showBlockDialog(BuildContext context) {

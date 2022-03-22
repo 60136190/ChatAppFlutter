@@ -130,7 +130,7 @@ class Data {
   String? userCode;
   int? unlimitPoint;
   int? favoriteStatus;
-  String? image;
+  List<String>? image;
   int? canCall;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -180,7 +180,11 @@ class Data {
     userCode: json["user_code"],
     unlimitPoint: json["unlimit_point"],
     favoriteStatus: json["favorite_status"],
-    image: json["image"],
+    image: [
+      jsonDecode(json['image'])[0]['path'],
+      jsonDecode(json['image'])[1]['path'],
+      jsonDecode(json['image'])[2]['path']
+    ],
     canCall: json["can_call"],
   );
 
