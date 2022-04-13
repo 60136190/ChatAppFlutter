@@ -12,10 +12,10 @@ class ListUserRespository implements ResposiroryListUser{
   Future<List<Result>> getListUser() async{
     final prefs = await SharedPreferences.getInstance();
     List<Result> userProfileList = [];
-    String? page = "1";
-    String? limit = "30";
-    String? input = "0";
-    String? token = prefs.getString('token');
+    String page = "1";
+    String limit = "30";
+    String input = "0";
+    String token = prefs.getString('token');
 
     var url = Uri.parse('$listUserUrl/api/user/find?page=${page}&limit=${limit}&input=${input}&token=${token}');
     var response = await http.get(url,headers: {

@@ -10,10 +10,10 @@ String favoriteUserModelToJson(FavoriteUserModel data) => json.encode(data.toJso
 
 class FavoriteUserModel {
   FavoriteUserModel({
-    required this.code,
-    required this.status,
-    required this.message,
-    required this.data,
+     this.code,
+     this.status,
+     this.message,
+     this.data,
   });
 
   int code;

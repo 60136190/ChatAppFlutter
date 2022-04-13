@@ -16,10 +16,10 @@ class BlockUserModel {
     this.data,
   });
 
-  int? code;
-  String? status;
-  String? message;
-  Data? data;
+  int code;
+  String status;
+  String message;
+  Data data;
 
   factory BlockUserModel.fromJson(Map<String, dynamic> json) => BlockUserModel(
     code: json["code"],
@@ -32,7 +32,7 @@ class BlockUserModel {
     "code": code,
     "status": status,
     "message": message,
-    "data": data!.toJson(),
+    "data": data.toJson(),
   };
 }
 
@@ -42,8 +42,8 @@ class Data {
     this.message,
   });
 
-  bool? status;
-  String? message;
+  bool status;
+  String message;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     status: json["status"],

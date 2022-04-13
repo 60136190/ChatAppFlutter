@@ -126,7 +126,7 @@ class _SecondScreen extends State<SecondScreen> {
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () => {
-                    if (_formKey.currentState!.validate() && ((_email.text== "thainam" && _password.text=="123" ))) {
+                    if (_formKey.currentState.validate() && ((_email.text== "thainam" && _password.text=="123" ))) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -134,7 +134,7 @@ class _SecondScreen extends State<SecondScreen> {
                       _email.clear(),
                       _password.clear(),
 
-                    }else if(_formKey.currentState!.validate() && ((_email.text!= "thainam" && _password.text!="123" ))){
+                    }else if(_formKey.currentState.validate() && ((_email.text!= "thainam" && _password.text!="123" ))){
                       _showCupertinoDialog(context),
                     }
 

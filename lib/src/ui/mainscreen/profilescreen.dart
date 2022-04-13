@@ -39,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class BodyProfile extends StatefulWidget {
-  BodyProfile({Key? key}) : super(key: key);
+  BodyProfile({Key key}) : super(key: key);
 
   @override
   _BodyProfile createState() => _BodyProfile();
@@ -121,10 +121,10 @@ class _BodyProfile extends State<BodyProfile> {
                   Spacer(),
                   new GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LeadingAddScreen()));
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => LeadingAddScreen()));
                     },
                     child: Container(
                       margin: EdgeInsets.all(5),
@@ -435,7 +435,7 @@ class _BodyProfile extends State<BodyProfile> {
 
 class Barline extends StatelessWidget {
   const Barline({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override

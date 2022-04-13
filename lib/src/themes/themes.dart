@@ -62,7 +62,7 @@ class MyTheme {
   static const Color textBlue = const Color(0xFF62C3CC);
 
   // Text Font
-  // static const String fontDefault = null; //'Roboto';
+  static const String fontDefault = null; //'Roboto';
   static const String fontHiraKakuPro = 'HiraKakuPro';
   static const String fontHiraKakuProW3 = 'HiraKakuProW3';
   static const String fontAdobeGothicStd = 'AdobeGothicStd-Bold';

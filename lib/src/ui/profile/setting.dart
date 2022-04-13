@@ -29,7 +29,7 @@ class Setting extends StatelessWidget{
 }
 
 class BodySetting extends StatefulWidget {
-  BodySetting({Key? key}) : super(key: key);
+  BodySetting({Key key}) : super(key: key);
 
   @override
   _BodySetting createState() => _BodySetting();
@@ -296,7 +296,7 @@ class _BodySetting extends State<BodySetting> {
 
 class Barline extends StatelessWidget {
   const Barline({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override

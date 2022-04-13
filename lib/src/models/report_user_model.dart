@@ -16,10 +16,10 @@ class ReportUserModel {
     this.data,
   });
 
-  int? code;
-  String? status;
-  String? message;
-  List<dynamic>? data;
+  int code;
+  String status;
+  String message;
+  List<dynamic> data;
 
   factory ReportUserModel.fromJson(Map<String, dynamic> json) => ReportUserModel(
     code: json["code"],
@@ -32,6 +32,6 @@ class ReportUserModel {
     "code": code,
     "status": status,
     "message": message,
-    "data": List<dynamic>.from(data!.map((x) => x)),
+    "data": List<dynamic>.from(data.map((x) => x)),
   };
 }

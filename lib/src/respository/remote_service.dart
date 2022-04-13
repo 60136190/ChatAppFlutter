@@ -5,7 +5,7 @@ import 'package:task1/src/models/listUser_model.dart';
 class RemoteServices {
   static var client = http.Client();
 
-  static Future<ListUserModel?> fetchProducts() async {
+  static Future<ListUserModel> fetchProducts() async {
     var response = await client.get(Uri.parse(
         'https://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline'));
     if (response.statusCode == 200) {

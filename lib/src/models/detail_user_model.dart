@@ -12,10 +12,10 @@ class DetailUserModel {
     this.data,
   });
 
-  int? code;
-  String? status;
-  String? message;
-  Data? data;
+  int code;
+  String status;
+  String message;
+  Data data;
 
   factory DetailUserModel.fromJson(Map<String, dynamic> json) => DetailUserModel(
     code: json["code"],
@@ -28,7 +28,7 @@ class DetailUserModel {
     "code": code,
     "status": status,
     "message": message,
-    "data": data!.toJson(),
+    "data": data .toJson(),
   };
 }
 
@@ -38,8 +38,6 @@ class Data {
     this.karaCategory,
     this.heightId,
     this.jobId,
-    this.styleId,
-    this.agencyId,
     this.isMirror,
     this.payment,
     this.longitude,
@@ -50,6 +48,8 @@ class Data {
     this.enableAcceptVoiceCall,
     this.createdAt,
     this.areaName,
+    this.styleId,
+    this.agencyId,
     this.type,
     this.sex,
     this.freeChat,
@@ -84,54 +84,54 @@ class Data {
     this.canCall,
   });
 
-  String? areaId;
-  String? karaCategory;
-  String? heightId;
-  String? jobId;
-  String? styleId;
-  String? agencyId;
-  String? isMirror;
-  String? payment;
-  String? longitude;
-  String? displayName;
-  String? height;
-  String? relationshipStatusId;
-  String? latitude;
-  String? enableAcceptVoiceCall;
-  DateTime? createdAt;
-  String? areaName;
-  String? type;
-  String? sex;
-  String? freeChat;
-  String? relationshipStatus;
-  String? cityId;
-  String? sexId;
-  String? salt;
-  String? income;
-  String? status;
-  String? job;
-  String? avatarUrl;
-  String? displayname;
-  String? enableAcceptVideoCall;
-  String? style;
-  String? incomeId;
-  String? birthday;
-  String? paymentStatus;
-  String? enableAcceptDate;
-  String? cityLevel;
-  String? age;
-  String? id;
-  String? userStatus;
-  String? karaGroup;
-  String? ageId;
-  DateTime? updatedAt;
-  String? cityName;
-  String? enableAcceptMessages;
-  String? userCode;
-  int? unlimitPoint;
-  int? favoriteStatus;
-  List<String>? image;
-  int? canCall;
+  String areaId;
+  String karaCategory;
+  String heightId;
+  String jobId;
+  String styleId;
+  String agencyId;
+  String isMirror;
+  String payment;
+  String longitude;
+  String displayName;
+  String height;
+  String relationshipStatusId;
+  String latitude;
+  String enableAcceptVoiceCall;
+  DateTime createdAt;
+  String areaName;
+  String type;
+  String sex;
+  String freeChat;
+  String relationshipStatus;
+  String cityId;
+  String sexId;
+  String salt;
+  String income;
+  String status;
+  String job;
+  String avatarUrl;
+  String displayname;
+  String enableAcceptVideoCall;
+  String style;
+  String incomeId;
+  String birthday;
+  String paymentStatus;
+  String enableAcceptDate;
+  String cityLevel;
+  String age;
+  String id;
+  String userStatus;
+  String karaGroup;
+  String ageId;
+  DateTime updatedAt;
+  String cityName;
+  String enableAcceptMessages;
+  String userCode;
+  int unlimitPoint;
+  int favoriteStatus;
+  List<String> image;
+  int canCall;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     areaId: json["area_id"],
@@ -203,7 +203,7 @@ class Data {
     "relationship_status_id": relationshipStatusId,
     "latitude": latitude,
     "enable_accept_voice_call": enableAcceptVoiceCall,
-    "created_at": createdAt!.toIso8601String(),
+    "created_at": createdAt.toIso8601String(),
     "area_name": areaName,
     "type": type,
     "sex": sex,
@@ -229,7 +229,7 @@ class Data {
     "user_status": userStatus,
     "kara_group": karaGroup,
     "age_id": ageId,
-    "updated_at": updatedAt!.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
     "city_name": cityName,
     "enable_accept_messages": enableAcceptMessages,
     "user_code": userCode,

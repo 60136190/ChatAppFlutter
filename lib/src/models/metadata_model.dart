@@ -13,10 +13,10 @@ class MetaData {
     this.data,
   });
 
-  int? code;
-  String? status;
-  String? message;
-  Data? data;
+  int code;
+  String status;
+  String message;
+  Data data;
 
   factory MetaData.fromJson(Map<String, dynamic> json) => MetaData(
     code: json["code"],
@@ -29,7 +29,7 @@ class MetaData {
     "code": code,
     "status": status,
     "message": message,
-    "data": data!.toJson(),
+    "data": data.toJson(),
   };
 }
 
@@ -55,24 +55,24 @@ class Data {
     this.profileNotSet,
   });
 
-  UserProfileList? userProfileList;
-  List<ProfileTitle>? profileTitles;
-  AgencyConfig? agencyConfig;
-  int? lockTab;
-  MediaConfig? mediaConfig;
-  Pages? pages;
-  NgWords? ngWords;
-  String? ngWordsReplace;
-  FunctionOff? functionOff;
-  String? googleMapUrl;
-  Supporter? supporter;
-  int? enabledAds;
-  dynamic? enabledIdentify;
-  String? callBackUrl;
-  String? pushOffTitle;
-  String? pushOffContent;
-  String? pushOffImage;
-  String? profileNotSet;
+  UserProfileList userProfileList;
+  List<ProfileTitle> profileTitles;
+  AgencyConfig agencyConfig;
+  int lockTab;
+  MediaConfig mediaConfig;
+  Pages pages;
+  NgWords ngWords;
+  String ngWordsReplace;
+  FunctionOff functionOff;
+  String googleMapUrl;
+  Supporter supporter;
+  int enabledAds;
+  dynamic enabledIdentify;
+  String callBackUrl;
+  String pushOffTitle;
+  String pushOffContent;
+  String pushOffImage;
+  String profileNotSet;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     userProfileList: UserProfileList.fromJson(json["user_profile_list"]),
@@ -96,17 +96,17 @@ class Data {
   );
 
   Map<String, dynamic> toJson() => {
-    "user_profile_list": userProfileList!.toJson(),
-    "profile_titles": List<dynamic>.from(profileTitles!.map((x) => x.toJson())),
-    "agency_config": agencyConfig!.toJson(),
+    "user_profile_list": userProfileList.toJson(),
+    "profile_titles": List<dynamic>.from(profileTitles.map((x) => x.toJson())),
+    "agency_config": agencyConfig.toJson(),
     "lock_tab": lockTab,
-    "media_config": mediaConfig!.toJson(),
-    "pages": pages!.toJson(),
-    "ng_words": ngWords!.toJson(),
+    "media_config": mediaConfig.toJson(),
+    "pages": pages.toJson(),
+    "ng_words": ngWords.toJson(),
     "ng_words_replace": ngWordsReplace,
-    "function_off": functionOff!.toJson(),
+    "function_off": functionOff.toJson(),
     "google_map_url": googleMapUrl,
-    "supporter": supporter!.toJson(),
+    "supporter": supporter.toJson(),
     "enabled_ads": enabledAds,
     "enabled_identify": enabledIdentify,
     "call_back_url": callBackUrl,
@@ -143,27 +143,27 @@ class AgencyConfig {
     this.paymentProvider,
   });
 
-  List<AppName>? modeAgeInput;
-  List<AppName>? appName;
-  List<AppName>? versionOffCreditRankingIos;
-  List<AppName>? versionOffCreditRankingAndroid;
-  List<AppName>? appUrl;
-  List<AppName>? emailSuport;
-  List<AppName>? callbackUrl;
-  List<AppName>? timezone;
-  List<AppName>? configMsg;
-  List<AppName>? sakuraDefault;
-  List<AppName>? userRecievePoint;
-  List<AppName>? limitReleasePeriod;
-  List<AppName>? confirmPointEnough;
-  List<AppName>? confirmPointNotEnough;
-  List<AppName>? supportKrId;
-  List<AppName>? callBackUrl;
-  List<AppName>? enabledAdsVersion;
-  List<AppName>? pushOffTitle;
-  List<AppName>? pushOffMessage;
-  List<AppName>? pushOffImage;
-  String? unlimitType;
+  List<AppName> modeAgeInput;
+  List<AppName> appName;
+  List<AppName> versionOffCreditRankingIos;
+  List<AppName> versionOffCreditRankingAndroid;
+  List<AppName> appUrl;
+  List<AppName> emailSuport;
+  List<AppName> callbackUrl;
+  List<AppName> timezone;
+  List<AppName> configMsg;
+  List<AppName> sakuraDefault;
+  List<AppName> userRecievePoint;
+  List<AppName> limitReleasePeriod;
+  List<AppName> confirmPointEnough;
+  List<AppName> confirmPointNotEnough;
+  List<AppName> supportKrId;
+  List<AppName> callBackUrl;
+  List<AppName> enabledAdsVersion;
+  List<AppName> pushOffTitle;
+  List<AppName> pushOffMessage;
+  List<AppName> pushOffImage;
+  String unlimitType;
   dynamic paymentProvider;
 
   factory AgencyConfig.fromJson(Map<String, dynamic> json) => AgencyConfig(
@@ -192,26 +192,26 @@ class AgencyConfig {
   );
 
   Map<String, dynamic> toJson() => {
-    "mode_age_input": List<dynamic>.from(modeAgeInput!.map((x) => x.toJson())),
-    "app_name": List<dynamic>.from(appName!.map((x) => x.toJson())),
-    "version_off_credit_ranking_ios": List<dynamic>.from(versionOffCreditRankingIos!.map((x) => x.toJson())),
-    "version_off_credit_ranking_android": List<dynamic>.from(versionOffCreditRankingAndroid!.map((x) => x.toJson())),
-    "app_url": List<dynamic>.from(appUrl!.map((x) => x.toJson())),
-    "email_suport": List<dynamic>.from(emailSuport!.map((x) => x.toJson())),
-    "callback_url": List<dynamic>.from(callbackUrl!.map((x) => x.toJson())),
-    "timezone": List<dynamic>.from(timezone!.map((x) => x.toJson())),
-    "config_msg": List<dynamic>.from(configMsg!.map((x) => x.toJson())),
-    "sakura_default": List<dynamic>.from(sakuraDefault!.map((x) => x.toJson())),
-    "user_recieve_point": List<dynamic>.from(userRecievePoint!.map((x) => x.toJson())),
-    "limit_release_period": List<dynamic>.from(limitReleasePeriod!.map((x) => x.toJson())),
-    "confirm_point_enough": List<dynamic>.from(confirmPointEnough!.map((x) => x.toJson())),
-    "confirm_point_not_enough": List<dynamic>.from(confirmPointNotEnough!.map((x) => x.toJson())),
-    "support_kr_id": List<dynamic>.from(supportKrId!.map((x) => x.toJson())),
-    "call_back_url": List<dynamic>.from(callBackUrl!.map((x) => x.toJson())),
-    "enabled_ads_version": List<dynamic>.from(enabledAdsVersion!.map((x) => x.toJson())),
-    "push_off_title": List<dynamic>.from(pushOffTitle!.map((x) => x.toJson())),
-    "push_off_message": List<dynamic>.from(pushOffMessage!.map((x) => x.toJson())),
-    "push_off_image": List<dynamic>.from(pushOffImage!.map((x) => x.toJson())),
+    "mode_age_input": List<dynamic>.from(modeAgeInput.map((x) => x.toJson())),
+    "app_name": List<dynamic>.from(appName.map((x) => x.toJson())),
+    "version_off_credit_ranking_ios": List<dynamic>.from(versionOffCreditRankingIos.map((x) => x.toJson())),
+    "version_off_credit_ranking_android": List<dynamic>.from(versionOffCreditRankingAndroid.map((x) => x.toJson())),
+    "app_url": List<dynamic>.from(appUrl.map((x) => x.toJson())),
+    "email_suport": List<dynamic>.from(emailSuport.map((x) => x.toJson())),
+    "callback_url": List<dynamic>.from(callbackUrl.map((x) => x.toJson())),
+    "timezone": List<dynamic>.from(timezone.map((x) => x.toJson())),
+    "config_msg": List<dynamic>.from(configMsg.map((x) => x.toJson())),
+    "sakura_default": List<dynamic>.from(sakuraDefault.map((x) => x.toJson())),
+    "user_recieve_point": List<dynamic>.from(userRecievePoint.map((x) => x.toJson())),
+    "limit_release_period": List<dynamic>.from(limitReleasePeriod.map((x) => x.toJson())),
+    "confirm_point_enough": List<dynamic>.from(confirmPointEnough.map((x) => x.toJson())),
+    "confirm_point_not_enough": List<dynamic>.from(confirmPointNotEnough.map((x) => x.toJson())),
+    "support_kr_id": List<dynamic>.from(supportKrId.map((x) => x.toJson())),
+    "call_back_url": List<dynamic>.from(callBackUrl.map((x) => x.toJson())),
+    "enabled_ads_version": List<dynamic>.from(enabledAdsVersion.map((x) => x.toJson())),
+    "push_off_title": List<dynamic>.from(pushOffTitle.map((x) => x.toJson())),
+    "push_off_message": List<dynamic>.from(pushOffMessage.map((x) => x.toJson())),
+    "push_off_image": List<dynamic>.from(pushOffImage.map((x) => x.toJson())),
     "unlimit_type": unlimitType,
     "payment_provider": paymentProvider,
   };
@@ -228,11 +228,11 @@ class AppName {
     this.rangeTo,
   });
 
-  String? id;
-  String? fieldId;
+  String id;
+  String fieldId;
   dynamic name;
-  String? value;
-  String? appNameDefault;
+  String value;
+  String appNameDefault;
   dynamic rangeFrom;
   dynamic rangeTo;
 
@@ -271,16 +271,16 @@ class FunctionOff {
     this.forceUpdateDescription,
   });
 
-  int? invite;
-  int? sendAll;
-  int? versionAppstoreReview;
-  String? newVersion;
-  String? newVersionUrl;
-  String? newVersionTitle;
-  String? newVersionDescription;
-  String? forceUpdateVersion;
-  String? forceUpdateTitle;
-  String? forceUpdateDescription;
+  int invite;
+  int sendAll;
+  int versionAppstoreReview;
+  String newVersion;
+  String newVersionUrl;
+  String newVersionTitle;
+  String newVersionDescription;
+  String forceUpdateVersion;
+  String forceUpdateTitle;
+  String forceUpdateDescription;
 
   factory FunctionOff.fromJson(Map<String, dynamic> json) => FunctionOff(
     invite: json["invite"],
@@ -315,8 +315,8 @@ class MediaConfig {
     this.showVideo,
   });
 
-  String? showAudio;
-  String? showVideo;
+  String showAudio;
+  String showVideo;
 
   factory MediaConfig.fromJson(Map<String, dynamic> json) => MediaConfig(
     showAudio: json["show_audio"],
@@ -335,8 +335,8 @@ class NgWords {
     this.total,
   });
 
-  List<String>? result;
-  int? total;
+  List<String> result;
+  int total;
 
   factory NgWords.fromJson(Map<String, dynamic> json) => NgWords(
     result: List<String>.from(json["result"].map((x) => x)),
@@ -344,7 +344,7 @@ class NgWords {
   );
 
   Map<String, dynamic> toJson() => {
-    "result": List<dynamic>.from(result!.map((x) => x)),
+    "result": List<dynamic>.from(result.map((x) => x)),
     "total": total,
   };
 }
@@ -355,8 +355,8 @@ class Pages {
     this.total,
   });
 
-  List<Result>? result;
-  int? total;
+  List<Result> result;
+  int total;
 
   factory Pages.fromJson(Map<String, dynamic> json) => Pages(
     result: List<Result>.from(json["result"].map((x) => Result.fromJson(x))),
@@ -364,7 +364,7 @@ class Pages {
   );
 
   Map<String, dynamic> toJson() => {
-    "result": List<dynamic>.from(result!.map((x) => x.toJson())),
+    "result": List<dynamic>.from(result.map((x) => x.toJson())),
     "total": total,
   };
 }
@@ -380,13 +380,13 @@ class Result {
     this.updatedAt,
   });
 
-  String? id;
-  String? title;
-  String? icon;
-  String? image;
-  String? slug;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+  String id;
+  String title;
+  String icon;
+  String image;
+  String slug;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   factory Result.fromJson(Map<String, dynamic> json) {
 
@@ -407,8 +407,8 @@ class Result {
     "icon": icon,
     "image": image,
     "slug": slug,
-    "created_at": createdAt!.toIso8601String(),
-    "updated_at": updatedAt!.toIso8601String(),
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
   };
 }
 
@@ -418,8 +418,8 @@ class ProfileTitle {
     this.name,
   });
 
-  String? slug;
-  String? name;
+  String slug;
+  String name;
 
   factory ProfileTitle.fromJson(Map<String, dynamic> json) => ProfileTitle(
     slug: json["slug"],
@@ -440,10 +440,10 @@ class Supporter {
     this.ofJid,
   });
 
-  String? id;
-  String? displayname;
-  String? userCode;
-  String? ofJid;
+  String id;
+  String displayname;
+  String userCode;
+  String ofJid;
 
   factory Supporter.fromJson(Map<String, dynamic> json) => Supporter(
     id: json["id"],
@@ -473,15 +473,15 @@ class UserProfileList {
     this.area,
   });
 
-  List<Age>? relationshipStatus;
-  List<Age>? income;
-  List<Age>? job;
-  List<Age>? style;
-  List<Age>? height;
-  List<Age>? age;
-  List<Age>? sex;
-  dynamic? realTime;
-  Map<String, Age>? area;
+  List<Age> relationshipStatus;
+  List<Age> income;
+  List<Age> job;
+  List<Age> style;
+  List<Age> height;
+  List<Age> age;
+  List<Age> sex;
+  dynamic realTime;
+  Map<String, Age> area;
 
   factory UserProfileList.fromJson(Map<String, dynamic> json) => UserProfileList(
     relationshipStatus: List<Age>.from(json["relationship_status"].map((x) => Age.fromJson(x))),
@@ -496,15 +496,15 @@ class UserProfileList {
   );
 
   Map<String, dynamic> toJson() => {
-    "relationship_status": List<dynamic>.from(relationshipStatus!.map((x) =>  x.toJson())),
-    "income": List<dynamic>.from(income!.map((x) => x.toJson())),
-    "job": List<dynamic>.from(job!.map((x) => x.toJson())),
-    "style": List<dynamic>.from(style!.map((x) => x.toJson())),
-    "height": List<dynamic>.from(height!.map((x) => x.toJson())),
-    "age": List<dynamic>.from(age!.map((x) => x.toJson())),
-    "sex": List<dynamic>.from(sex!.map((x) => x.toJson())),
+    "relationship_status": List<dynamic>.from(relationshipStatus.map((x) =>  x.toJson())),
+    "income": List<dynamic>.from(income.map((x) => x.toJson())),
+    "job": List<dynamic>.from(job.map((x) => x.toJson())),
+    "style": List<dynamic>.from(style.map((x) => x.toJson())),
+    "height": List<dynamic>.from(height.map((x) => x.toJson())),
+    "age": List<dynamic>.from(age.map((x) => x.toJson())),
+    "sex": List<dynamic>.from(sex.map((x) => x.toJson())),
     "real_time": realTime,
-    "area": Map.from(area!).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
+    "area": Map.from(area).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
   };
 }
 
@@ -516,9 +516,9 @@ class Age {
     this.ageDefault,
   });
 
-  String? fieldId;
-  String? name;
-  String? value;
+  String fieldId;
+  String name;
+  String value;
   dynamic ageDefault;
 
   factory Age.fromJson(Map<String, dynamic> json) => Age(

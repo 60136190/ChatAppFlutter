@@ -29,7 +29,7 @@ class ChangeProfile extends StatelessWidget {
 }
 
 class BodyChangeProfile extends StatefulWidget {
-  BodyChangeProfile({Key? key}) : super(key: key);
+  BodyChangeProfile({Key key}) : super(key: key);
 
   @override
   _BodyChangeProfile createState() => _BodyChangeProfile();
@@ -419,7 +419,7 @@ class _BodyChangeProfile extends State<BodyChangeProfile> {
 
 class Barline extends StatelessWidget {
   const Barline({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override

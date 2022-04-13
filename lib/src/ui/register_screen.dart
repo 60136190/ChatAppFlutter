@@ -1,32 +1,32 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
-import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task1/src/constants/constants.dart';
 import 'package:task1/src/models/login_model.dart';
 import 'package:task1/src/models/register_model.dart';
+import 'package:task1/src/models/register_second_model.dart';
+import 'package:task1/src/services/socket_io_client.dart';
+import 'package:task1/src/storages/store.dart';
 import 'package:task1/src/ui/mainscreen/mainscreen.dart';
+
 import 'secondscreen.dart';
 
-class Registers extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   @override
-  _Registers createState() => _Registers();
+  _RegisterScreen  createState() => _RegisterScreen ();
 }
 
-class _Registers extends State<Registers> {
+class _RegisterScreen  extends State<RegisterScreen > {
   void initState() {
     super.initState();
     this.getSWData();
   }
 
-  RegisterModel? _register;
+  RegisterModel _register;
 
   // When register successfully then change main screen
   _navigatetohome() async {
@@ -40,7 +40,7 @@ class _Registers extends State<Registers> {
   Future<RegisterModel> postRegister(
       String displayname, area, sex, age, city, password) async {
     final prefs = await SharedPreferences.getInstance();
-    String? device_id_android = prefs.getString('device_id_android');
+    String device_id_android = prefs.getString('device_id_android');
     var url = Uri.parse('$registerUrl/api/register/index');
     var response = await http.post(url, headers: {
       "X-DEVICE-ID": "$device_id_android",
@@ -65,10 +65,10 @@ class _Registers extends State<Registers> {
       var resBody = json.decode(response.body);
       var  resUser_code = resBody["data"]["user_code"];
       final prefs = await SharedPreferences.getInstance();
-      prefs.setString('user_code', resUser_code);
+      prefs.setString("user_code", resUser_code);
       return registerFromJson(responseString);
     } else {
-      return null!;
+      return null;
     }
   }
 
@@ -85,8 +85,8 @@ class _Registers extends State<Registers> {
                 .codeUnitAt(_rnd.nextInt(_chars.length))));
     final password = getRandomString(8);
     final prefs = await SharedPreferences.getInstance();
-    String? device_id_android = prefs.getString('device_id_android');
-    String? user_code = prefs.getString('user_code');
+    String device_id_android = prefs.getString("device_id_android");
+    String user_code = prefs.getString("user_code");
     var url = Uri.parse('$registerUrl/api/login/index');
     var responseLogin = await http.post(url, headers: {
       "X-DEVICE-ID": "$device_id_android",
@@ -103,13 +103,17 @@ class _Registers extends State<Registers> {
     if (responseLogin.statusCode == 200) {
       final String response = responseLogin.body;
       var resBodyLogin = json.decode(responseLogin.body);
-      var token = resBodyLogin['data']['token'];
-      prefs.setString('token', token);
-      print('abcdef$resBodyLogin');
+      var token = resBodyLogin["data"]["token"];
+      var id_user = resBodyLogin["data"]["id"];
+      var socket_jwt = resBodyLogin["data"]["socket_jwt"];
+
+      prefs.setString("token", token);
+      prefs.setInt("id_user", id_user);
+      prefs.setString("socket_jwt", socket_jwt);
       _navigatetohome();
       return loginModelFromJson(response);
     } else {
-      return null!;
+      return null;
     }
   }
 
@@ -120,8 +124,8 @@ class _Registers extends State<Registers> {
   // final deviceTransferFormKey = GlobalKey<FormState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool? isChecked_age = true;
-  bool? isChecked_confirm = true;
+  bool isChecked_age = true;
+  bool isChecked_confirm = true;
   TextEditingController _displayname = TextEditingController();
 
   @override
@@ -365,16 +369,17 @@ class _Registers extends State<Registers> {
                       //       MaterialPageRoute(builder: (context) => MainScreen()));
                       //   _displayname.clear();
                       // }
-                      if ((_formKey.currentState!.validate() &&
+                      if ((_formKey.currentState.validate() &&
                               isChecked_age != true ||
                           isChecked_confirm != true)) {
                         _showCupertinoDialog(context);
                       } else {
                         final String displayname = _displayname.text;
-                        final String area = _myArea!;
-                        final String sex = _mySex!;
-                        final String age = _myAge!;
-                        final String city = _myCity!;
+                        print('aaaaaaaaaaaaaaaaaaaa ${displayname}');
+                        final String area = _myArea;
+                        final String sex = _mySex;
+                        final String age = _myAge;
+                        final String city = _myCity;
                         const _chars =
                             'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
                         Random _rnd = Random();
@@ -386,7 +391,7 @@ class _Registers extends State<Registers> {
                         final password = getRandomString(8);
 
                         RegisterModel data = await postRegister(
-                            displayname, area, sex, age, city, password);
+                            displayname.trim(), area, sex, age, city, password);
                         setState(() {
                           _register = data;
                         });
@@ -413,20 +418,20 @@ class _Registers extends State<Registers> {
         ));
   }
 
-  String? _myAge;
+  String _myAge;
   List dataAge = [];
 
   List dataSex = [];
-  String? _mySex;
+  String _mySex;
 
-  String? _myArea;
+  String _myArea;
   List dataArea = [];
 
   String sexurl = "http://59.106.218.175:8086";
 
   Future<String> getSWData() async {
     final prefs = await SharedPreferences.getInstance();
-    String? device_id_android = prefs.getString('device_id_android');
+    String device_id_android = prefs.getString('device_id_android');
     var url = Uri.parse('$sexurl/api/metadata');
     var res = await http.get(url, headers: {
       "X-DEVICE-ID": "$device_id_android",
@@ -452,12 +457,12 @@ class _Registers extends State<Registers> {
   }
 
 // ------------------------------- get data city
-  String? _myCity;
+  String _myCity;
   List dataCity = [];
 
   Future<String> getCityData() async {
     final prefs = await SharedPreferences.getInstance();
-    String? device_id_android = prefs.getString('device_id_android');
+    String device_id_android = prefs.getString('device_id_android');
     var url = Uri.parse('$sexurl/api/region/cities?area_id=${_myArea}');
     print('aaaaaaaas$url');
     var res = await http.get(url, headers: {
@@ -480,7 +485,7 @@ class _Registers extends State<Registers> {
 }
 
 class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+  const MyStatefulWidget({Key key}) : super(key: key);
 
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
@@ -507,9 +512,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       checkColor: Colors.white,
       fillColor: MaterialStateProperty.resolveWith(getColor),
       value: isChecked,
-      onChanged: (bool? value) {
+      onChanged: (bool value) {
         setState(() {
-          isChecked = value!;
+          isChecked = value;
         });
       },
     );

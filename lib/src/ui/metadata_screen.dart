@@ -20,7 +20,7 @@ class _MetaDataScreen extends State<MetaDataScreen> {
         backgroundColor: Colors.green,
         actions: [
           IconButton(onPressed: () => {
-            Navigator.push((context), MaterialPageRoute(builder: (context) => Registers()))
+            Navigator.push((context), MaterialPageRoute(builder: (context) => RegisterScreen ()))
           }, icon: Icon(Icons.settings))
         ],
       ),
@@ -52,7 +52,7 @@ class _MetaDataScreen extends State<MetaDataScreen> {
                       return Center(child: Text('error'));}
                     return ListView.separated(
                         itemBuilder: (context, index) {
-                          var profile = snapshot.data?[index];
+                          var profile = snapshot.data[index];
                           return Container(
                             height: 100,
                             padding: const EdgeInsets.symmetric(
@@ -100,7 +100,7 @@ class _MetaDataScreen extends State<MetaDataScreen> {
                     }
                     return ListView.separated(
                         itemBuilder: (context, index) {
-                          var profile = snapshot.data?[index];
+                          var profile = snapshot.data[index];
                           return Container(
                             height: 100,
                             padding: const EdgeInsets.symmetric(
@@ -149,7 +149,7 @@ class _MetaDataScreen extends State<MetaDataScreen> {
                     }
                     return ListView.separated(
                         itemBuilder: (context, index) {
-                          var profile = snapshot.data?[index];
+                          var profile = snapshot.data[index];
                           return Container(
                             height: 100,
                             padding: const EdgeInsets.symmetric(
@@ -199,7 +199,7 @@ class _MetaDataScreen extends State<MetaDataScreen> {
                     }
                     return ListView.separated(
                         itemBuilder: (context, index) {
-                          var profile = snapshot.data?[index];
+                          var profile = snapshot.data[index];
                           return Container(
                             height: 100,
                             padding: const EdgeInsets.symmetric(
@@ -249,7 +249,7 @@ class _MetaDataScreen extends State<MetaDataScreen> {
                     }
                     return ListView.separated(
                         itemBuilder: (context, index) {
-                          var profile = snapshot.data?[index];
+                          var profile = snapshot.data[index];
                           return Container(
                             height: 100,
                             padding: const EdgeInsets.symmetric(
@@ -299,7 +299,7 @@ class _MetaDataScreen extends State<MetaDataScreen> {
                     }
                     return ListView.separated(
                         itemBuilder: (context, index) {
-                          var profile = snapshot.data?[index];
+                          var profile = snapshot.data[index];
                           return Container(
                             height: 100,
                             padding: const EdgeInsets.symmetric(
@@ -349,7 +349,7 @@ class _MetaDataScreen extends State<MetaDataScreen> {
                     }
                     return ListView.separated(
                         itemBuilder: (context, index) {
-                          var profile = snapshot.data?[index];
+                          var profile = snapshot.data[index];
                           return Container(
                             height: 100,
                             padding: const EdgeInsets.symmetric(

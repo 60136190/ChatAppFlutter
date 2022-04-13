@@ -69,7 +69,7 @@ class MenuScreen extends StatelessWidget {
 }
 
 class MN extends StatelessWidget {
-  const MN({Key? key, required this.list}) : super(key: key);
+  const MN({Key key,  this.list}) : super(key: key);
 
   final ListMenu list;
 
@@ -136,8 +136,8 @@ class MN extends StatelessWidget {
 
 class TextMessage extends StatelessWidget {
   const TextMessage({
-    Key? key,
-    required this.list,
+    Key key,
+     this.list,
   }) : super(key: key);
 
   final ListMenu list;

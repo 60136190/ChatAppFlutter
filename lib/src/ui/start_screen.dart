@@ -1,7 +1,4 @@
-
-
 import 'dart:io';
-
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,15 +19,18 @@ class _StartScreen extends State<StartScreen> {
     super.initState();
     getDeviceDetail();
     _navigatetohome();
+
   }
   _navigatetohome() async{
     await Future.delayed(Duration(milliseconds: 5000), () {});
     final prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
+    String token = prefs.getString('token');
+    String socket_jwt = prefs.getString('socket_jwt');
+
     if(token != null){
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
     }else{
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Registers()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RegisterScreen ()));
     }
   }
 
@@ -82,7 +82,7 @@ class _StartScreen extends State<StartScreen> {
                 Expanded(
                   flex: 3,
                   child: Text(
-                    'Version 1.0.19',
+                    'Version 1.0.16',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 10,

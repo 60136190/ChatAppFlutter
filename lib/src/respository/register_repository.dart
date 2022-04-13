@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:task1/src/models/metadata_model.dart';
 import 'package:task1/src/models/register_model.dart';
+import 'package:task1/src/models/register_second_model.dart';
 import 'package:task1/src/respository/registerRepo.dart';
 import 'package:task1/src/respository/repository.dart';
 import 'package:task1/src/ui/profile/change_profile.dart';
@@ -34,7 +35,7 @@ class RegisterRespository implements RegisterRepo{
       final String responseString = response.body;
       return registerFromJson(responseString);
     }else{
-      return null!;
+      return null;
     }
   }
 }

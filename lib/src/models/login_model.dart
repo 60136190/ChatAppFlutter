@@ -16,10 +16,10 @@ class LoginModel {
     this.data,
   });
 
-  int? code;
-  String? status;
-  String? message;
-  Data? data;
+  int code;
+  String status;
+  String message;
+  Data data;
 
   factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
     code: json["code"],
@@ -32,7 +32,7 @@ class LoginModel {
     "code": code,
     "status": status,
     "message": message,
-    "data": data!.toJson(),
+    "data": data.toJson(),
   };
 }
 
@@ -53,19 +53,19 @@ class Data {
     this.enableChat,
   });
 
-  int? id;
-  String? displayname;
-  String? userCode;
+  int id;
+  String displayname;
+  String userCode;
   dynamic email;
-  String? token;
-  String? socketJwt;
-  String? sex;
-  String? ofRid;
-  String? ofSid;
-  int? birthdayUpdate;
-  int? isBonus;
-  String? image;
-  int? enableChat;
+  String token;
+  String socketJwt;
+  String sex;
+  String ofRid;
+  String ofSid;
+  int birthdayUpdate;
+  int isBonus;
+  String image;
+  int enableChat;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     id: json["id"],

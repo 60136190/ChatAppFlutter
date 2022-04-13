@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class SizedImage extends StatelessWidget {
   const SizedImage(this.assetImage, {
-      Key? key,
-      required this.width,
-      required this.height,
+      Key key,
+      @required this.width,
+      @required this.height,
       this.scale = 1.0
     }) : super(key: key);
 
   const SizedImage.square(this.assetImage, {
-      Key? key,
-      required double edge,
+      Key key,
+      @required double edge,
       this.scale = 1.0
     }) : width = edge,
          height = edge,

@@ -22,10 +22,10 @@ class _TabE extends State<TabE> {
           if (snapshot.hasData) {
             return GridView.builder(
                 itemCount: snapshot.data?.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2
-                ),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                 itemBuilder: (context, index) {
                   return  Card(
+                    semanticContainer: true,
                     elevation: 1,
                     child: Column(
                       children: [
@@ -33,15 +33,14 @@ class _TabE extends State<TabE> {
                           height: 130,
                           child: Material(
                             child: InkWell(
-
                               onTap: () => {
                                 Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => DetailScreen(text: '${snapshot.data![index].id}', key: null!))),
+                                    MaterialPageRoute(builder: (context) => DetailScreen(text: '${snapshot.data[index].id}'),)),
                               },
                               child:ClipRRect(
                                 child: Image.network(
-                                  '${snapshot.data![index].avatarUrl}',
-                                  fit: BoxFit.fitWidth,
+                                  '${snapshot.data[index].avatarUrl}',
+                                  fit: BoxFit.fill,
                                 ),
                               ),
                             ),
@@ -51,7 +50,7 @@ class _TabE extends State<TabE> {
                           alignment: Alignment.centerLeft,
                           child: Container(
                             margin: EdgeInsets.only(left: 5, top: 1, bottom: 1),
-                            child: Text("${snapshot.data![index].displayname}",
+                            child: Text("${snapshot.data[index].displayname}",
                                 style: TextStyle(
                                     color: kPink,
                                     fontSize: 15,
@@ -63,7 +62,7 @@ class _TabE extends State<TabE> {
                           child: Container(
                             margin: EdgeInsets.only(left: 5, top: 1, bottom: 1),
                             child: Text(
-                              "${snapshot.data![index].displayName}",
+                              "${snapshot.data[index].displayName}",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 13,
@@ -80,10 +79,7 @@ class _TabE extends State<TabE> {
             return Text("Error");
           }
           return Center(child: CircularProgressIndicator(
-            strokeWidth: 10,
-            backgroundColor: Colors.black,
-            valueColor:
-            AlwaysStoppedAnimation<Color>(Colors.black),
+            valueColor: AlwaysStoppedAnimation(kPink),
           ));
         },
       ),

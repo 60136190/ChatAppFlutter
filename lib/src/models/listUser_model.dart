@@ -16,10 +16,10 @@ class ListUserModel {
     this.data,
   });
 
-  int? code;
-  String? status;
-  String? message;
-  Data? data;
+  int code;
+  String status;
+  String message;
+  Data data;
 
   factory ListUserModel.fromJson(Map<String, dynamic> json) => ListUserModel(
     code: json["code"],
@@ -32,7 +32,7 @@ class ListUserModel {
     "code": code,
     "status": status,
     "message": message,
-    "data": data!.toJson(),
+    "data": data.toJson(),
   };
 }
 
@@ -41,14 +41,14 @@ class Data {
     this.result,
   });
 
-  List<Result>? result;
+  List<Result> result;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     result: List<Result>.from(json["result"].map((x) => Result.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "result": List<dynamic>.from(result!.map((x) => x.toJson())),
+    "result": List<dynamic>.from(result.map((x) => x.toJson())),
   };
 }
 
@@ -242,192 +242,192 @@ class Result {
     this.totalFootprint,
   });
 
-  String? job;
-  String? lockIds;
-  String? drinkingId;
-  String? accessLastLogin;
-  String? karaAutoOnline;
-  String? accountHolderFullName;
-  String? avatarChecknote;
-  String? style;
-  String? isVerifyIncome;
-  String? birthday;
-  String? createdAtDev;
-  String? sexInterestId;
-  String? hobby;
-  String? isDow;
-  String? enableAcceptDate;
-  String? userStatusApproveby;
-  String? realTimeId;
-  String? userStatusApprovenote;
-  String? moodStatus;
-  String? allowVoiceCall;
-  String? osVersion;
-  String? keijibanShow;
-  String? realTime;
-  String? livingAreaId;
-  String? styleInterest;
-  String? suspend;
-  String? favoritePlaceTmp;
-  String? bloodType;
-  String? isBulk;
-  String? groupNormal;
-  String? favoritePlace;
-  String? avatarChange;
-  String? look;
-  DateTime? updatedAt;
-  DateTime? userStatusApprovedate;
-  String? enableFootprint;
-  String? email;
-  String? userStatusTmp;
-  String? osType;
-  String? educationId;
-  String? isVerifyAge;
-  String? adminId;
-  String? bankName;
-  String? meetingConditionId;
-  String? karaEnableMap;
-  String? updatedAtDev;
-  String? isSubscription;
-  String? longitude;
-  String? deviceId;
-  String? isVerifyAssets;
-  String? enabledCall;
-  String? height;
-  String? accountNumber;
-  String? sexId;
-  String? cityId;
-  String? smoking;
-  String? bulkSendStatus;
-  String? avatarUrl;
-  String? enableAcceptVideoCall;
-  String? campaignShow;
-  String? accountHolderLastName;
-  String? incomeId;
-  String? paymentStatus;
-  String? showLocation;
-  DateTime? accessLastTime;
-  String? isPush;
-  String? cityLevel;
-  String? userMoodStatusChange;
-  String? enablePushNotice;
-  String? age;
-  String? isFree;
-  String? avatarCheckby;
-  String? carId;
-  DateTime? userStatusChangeDate;
-  String? freeTimeId;
-  String? allowVideoCall;
-  String? karaGroup;
-  String? isPrivate;
-  String? enablePushMessage;
-  String? firstPlaceTmp;
-  String?enablePushLike;
-  String? payPackagePoint;
-  String? transferEmail;
-  String? userStatusChange;
-  String? drinking;
-  String? deletedAt;
-  String? meetingCondition;
-  String? accountHolderFirstName;
-  String? karaEnableSearch;
-  String? userCode;
-  String? holidaysId;
-  String? loginDaysNumber;
-  String? agencyId;
-  String? enablePushMatching;
-  String? isVerifyPhone;
-  String? accountType;
-  String? ageInterestId;
-  String? latitude;
-  String? type;
-  DateTime? createdAt;
-  String? smokingId;
-  String? enableAcceptVoiceCall;
-  String? adsCode;
-  String? avatarCheckdate;
-  String? childId;
-  String? sex;
-  String? relationshipStatus;
-  String? accessLastAppStatus;
-  String? income;
-  String? birthPlace;
-  String? transferPass;
-  String? purposeId;
-  String? livingArea;
-  String? branchCode;
-  String? styleId;
-  String? inviteUserId;
-  String? userMemo;
-  String? displayName;
-  String? relationshipStatusId;
-  String? hobbyTmp;
-  String? firstPlace;
-  String? birthPlaceId;
-  String? styleInterestId;
-  String? salt;
-  String? status;
-  String? isAvatar;
-  String? purpose;
-  String? sexInterest;
-  String? ageInterest;
-  String? enablePushFootprint;
-  String? roommate;
-  String? noticeSendStatus;
-  String? id;
-  String? bandedTime;
-  String? phone;
-  String? freeTime;
-  String? groupPoint;
-  String? avatarShow;
-  String? moodStatusTmp;
-  String? userStatus;
-  String? education;
-  String? ageId;
-  String? userMoodStatusChangeDate;
-  String? pushSendStatus;
-  String? enableAcceptMessages;
-  String? lastSubscriptionToken;
-  String? sakuraId;
-  String? pointUpdated;
-  String? inactive;
-  String? karaCategory;
-  String? areaId;
-  String? heightId;
-  String? child;
-  String? jobId;
-  String? isCreatedOpenfire;
-  String? point;
-  String? enablePushGift;
-  String? typeStatus;
-  String? car;
-  String? isCloned;
-  String? groupCampaign;
-  String? bloodTypeId;
-  String? accessLastAction;
-  String? karaEnableKeijiban;
-  String? rank;
-  String? payPackageMonth;
-  String? roommateId;
-  String? campaignGroup;
-  String? lookId;
-  String? holidays;
-  String? displayname;
-  String? areaName;
-  String? cityName;
-  int? unlimitPoint;
-  int? favoriteStatus;
-  String? isMirror;
-  String? payment;
-  String? freeChat;
-  String? onlyOneKr;
-  String? operatorType;
-  String? lng;
-  String? lat;
-  String? totalUnlimit;
-  String? ofJid;
-  String? password;
-  String? totalFootprint;
+  String job;
+  String lockIds;
+  String drinkingId;
+  String accessLastLogin;
+  String karaAutoOnline;
+  String accountHolderFullName;
+  String avatarChecknote;
+  String style;
+  String isVerifyIncome;
+  String birthday;
+  String createdAtDev;
+  String sexInterestId;
+  String hobby;
+  String isDow;
+  String enableAcceptDate;
+  String userStatusApproveby;
+  String realTimeId;
+  String userStatusApprovenote;
+  String moodStatus;
+  String allowVoiceCall;
+  String osVersion;
+  String keijibanShow;
+  String realTime;
+  String livingAreaId;
+  String styleInterest;
+  String suspend;
+  String favoritePlaceTmp;
+  String bloodType;
+  String isBulk;
+  String groupNormal;
+  String favoritePlace;
+  String avatarChange;
+  String look;
+  DateTime updatedAt;
+  DateTime userStatusApprovedate;
+  String enableFootprint;
+  String email;
+  String userStatusTmp;
+  String osType;
+  String educationId;
+  String isVerifyAge;
+  String adminId;
+  String bankName;
+  String meetingConditionId;
+  String karaEnableMap;
+  String updatedAtDev;
+  String isSubscription;
+  String longitude;
+  String deviceId;
+  String isVerifyAssets;
+  String enabledCall;
+  String height;
+  String accountNumber;
+  String sexId;
+  String cityId;
+  String smoking;
+  String bulkSendStatus;
+  String avatarUrl;
+  String enableAcceptVideoCall;
+  String campaignShow;
+  String accountHolderLastName;
+  String incomeId;
+  String paymentStatus;
+  String showLocation;
+  DateTime accessLastTime;
+  String isPush;
+  String cityLevel;
+  String userMoodStatusChange;
+  String enablePushNotice;
+  String age;
+  String isFree;
+  String avatarCheckby;
+  String carId;
+  DateTime userStatusChangeDate;
+  String freeTimeId;
+  String allowVideoCall;
+  String karaGroup;
+  String isPrivate;
+  String enablePushMessage;
+  String firstPlaceTmp;
+  String enablePushLike;
+  String payPackagePoint;
+  String transferEmail;
+  String userStatusChange;
+  String drinking;
+  String deletedAt;
+  String meetingCondition;
+  String accountHolderFirstName;
+  String karaEnableSearch;
+  String userCode;
+  String holidaysId;
+  String loginDaysNumber;
+  String agencyId;
+  String enablePushMatching;
+  String isVerifyPhone;
+  String accountType;
+  String ageInterestId;
+  String latitude;
+  String type;
+  DateTime createdAt;
+  String smokingId;
+  String enableAcceptVoiceCall;
+  String adsCode;
+  String avatarCheckdate;
+  String childId;
+  String sex;
+  String relationshipStatus;
+  String accessLastAppStatus;
+  String income;
+  String birthPlace;
+  String transferPass;
+  String purposeId;
+  String livingArea;
+  String branchCode;
+  String styleId;
+  String inviteUserId;
+  String userMemo;
+  String displayName;
+  String relationshipStatusId;
+  String hobbyTmp;
+  String firstPlace;
+  String birthPlaceId;
+  String styleInterestId;
+  String salt;
+  String status;
+  String isAvatar;
+  String purpose;
+  String sexInterest;
+  String ageInterest;
+  String enablePushFootprint;
+  String roommate;
+  String noticeSendStatus;
+  String id;
+  String bandedTime;
+  String phone;
+  String freeTime;
+  String groupPoint;
+  String avatarShow;
+  String moodStatusTmp;
+  String userStatus;
+  String education;
+  String ageId;
+  String userMoodStatusChangeDate;
+  String pushSendStatus;
+  String enableAcceptMessages;
+  String lastSubscriptionToken;
+  String sakuraId;
+  String pointUpdated;
+  String inactive;
+  String karaCategory;
+  String areaId;
+  String heightId;
+  String child;
+  String jobId;
+  String isCreatedOpenfire;
+  String point;
+  String enablePushGift;
+  String typeStatus;
+  String car;
+  String isCloned;
+  String groupCampaign;
+  String bloodTypeId;
+  String accessLastAction;
+  String karaEnableKeijiban;
+  String rank;
+  String payPackageMonth;
+  String roommateId;
+  String campaignGroup;
+  String lookId;
+  String holidays;
+  String displayname;
+  String areaName;
+  String cityName;
+  int unlimitPoint;
+  int favoriteStatus;
+  String isMirror;
+  String payment;
+  String freeChat;
+  String onlyOneKr;
+  String operatorType;
+  String lng;
+  String lat;
+  String totalUnlimit;
+  String ofJid;
+  String password;
+  String totalFootprint;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
     job: json["job"],
@@ -652,8 +652,8 @@ class Result {
     "favorite_place": favoritePlace == null ? null : favoritePlace,
     "avatar_change": avatarChange == null ? null : avatarChange,
     "look": look == null ? null : look,
-    "updated_at": updatedAt!.toIso8601String(),
-    "user_status_approvedate": userStatusApprovedate == null ? null : userStatusApprovedate!.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+    "user_status_approvedate": userStatusApprovedate == null ? null : userStatusApprovedate.toIso8601String(),
     "enable_footprint": enableFootprint == null ? null : enableFootprint,
     "email": email == null ? null : email,
     "user_status_tmp": userStatusTmp == null ? null : userStatusTmp,
@@ -683,7 +683,7 @@ class Result {
     "income_id": incomeId,
     "payment_status": paymentStatus == null ? null : paymentStatus,
     "show_location": showLocation == null ? null : showLocation,
-    "access_last_time": accessLastTime == null ? null : accessLastTime!.toIso8601String(),
+    "access_last_time": accessLastTime == null ? null : accessLastTime.toIso8601String(),
     "is_push": isPush == null ? null : isPush,
     "city_level": cityLevel == null ? null : cityLevel,
     "user_mood_status_change": userMoodStatusChange == null ? null : userMoodStatusChange,
@@ -692,7 +692,7 @@ class Result {
     "is_free": isFree == null ? null : isFree,
     "avatar_checkby": avatarCheckby == null ? null : avatarCheckby,
     "car_id": carId == null ? null : carId,
-    "user_status_change_date": userStatusChangeDate == null ? null : userStatusChangeDate!.toIso8601String(),
+    "user_status_change_date": userStatusChangeDate == null ? null : userStatusChangeDate.toIso8601String(),
     "free_time_id": freeTimeId == null ? null : freeTimeId,
     "allow_video_call": allowVideoCall == null ? null : allowVideoCall,
     "kara_group": karaGroup,
@@ -718,7 +718,7 @@ class Result {
     "age_interest_id": ageInterestId == null ? null : ageInterestId,
     "latitude": latitude,
     "type": type,
-    "created_at": createdAt!.toIso8601String(),
+    "created_at": createdAt.toIso8601String(),
     "smoking_id": smokingId == null ? null : smokingId,
     "enable_accept_voice_call": enableAcceptVoiceCall,
     "ads_code": adsCode == null ? null : adsCode,
