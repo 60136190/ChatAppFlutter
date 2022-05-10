@@ -8,6 +8,7 @@ import 'package:task1/src/respository/list_message_respository.dart';
 import 'package:task1/src/respository/meta_data_respository.dart';
 import 'package:task1/src/services/socket_io_client.dart';
 import 'package:task1/src/storages/store.dart';
+import 'package:task1/src/ui/mypage/mypage_screen.dart';
 
 import '../point/point_screen.dart';
 import 'list_message_screen.dart';

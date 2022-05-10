@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:adjust_sdk/adjust_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task1/src/apis/adwall_api.dart';
 import 'package:task1/src/apis/payment_validate_api.dart';
 import 'package:task1/src/apis/point_package_api.dart';
@@ -45,8 +46,6 @@ class PointFee {
 }
 
 class PointStore {
-  final _token = store<AuthStore>().userLoginData.token;
-  // final _token = "98eb561aa763491c1714ee1b176e736e";
 
   // Global value
   int totalPoint = 0;
@@ -71,14 +70,16 @@ class PointStore {
   new AdjustConfig(Config.KEY_ADJUST['token'], AdjustEnvironment.sandbox);
 
   Future<List<PointPackage>> pointPackage() async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
     var params = {
-      'token': _token,
+      'token': token,
       'type': Platform.isIOS
           ? Config.TYPE_PAYMENT['iOS']
           : Config.TYPE_PAYMENT['Android']
     };
 
-    adWall = await getAdwallInfoApi(_token, false);
+    adWall = await getAdwallInfoApi(token, false);
 
     var response = await pointPackageApi(_headers, params);
     if (response != null) {
@@ -89,7 +90,9 @@ class PointStore {
   }
 
   Future<bool> pointSetting() async {
-    var params = {'token': _token};
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
+    var params = {'token': token};
     var response = await pointSettingApi(_headers, params);
     if (response != null) {
       totalPoint = int.tryParse('${response['data']['balance']}') ?? 0;
@@ -128,10 +131,12 @@ class PointStore {
 
   Future showDialogNotEnoughPoint(context,
       {bool hideBottomBar, isLoading}) async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
     if (!store<SystemStore>().serverState.reviewMode) {
       if (isLoading != null) isLoading.add(true);
 
-      adWall = await getAdwallInfoApi(_token, true);
+      adWall = await getAdwallInfoApi(token, true);
 
       if (isLoading != null) isLoading.add(false);
     }
@@ -164,7 +169,9 @@ class PointStore {
   }
 
   Future<List<PointTable>> pointTable() async {
-    var params = {'token': _token};
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
+    var params = {'token': token};
     var response = await pointTableApi(_headers, params);
     if (response != null) {
       return PointTable.listFromJson(response);
@@ -173,6 +180,8 @@ class PointStore {
   }
 
   Future verifyPurchase(PurchasedItem item) async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
     //Phuc note1: chỉ được sử dụng cho package test của android
     var dataAndroid = jsonDecode(item.dataAndroid);
     dataAndroid['orderId'] = item.orderId + '${new DateTime.now().millisecondsSinceEpoch}';
@@ -198,7 +207,7 @@ class PointStore {
     log('phuc log $receiptData');
 
     var params = {
-      'token': _token,
+      'token': token,
       'receipt-data': jsonEncode(receiptData),
     };
 
@@ -219,12 +228,12 @@ class PointStore {
   }
 
   void showPurchaseUI(point) {
-    MsgDialog.showMsgDialog(
-      store<NavigationService>().navigatorKey.currentState.overlay.context,
-      title: 'ポイントを購入しました',
-      content: '購入したポイント：$point'
-          '\n合計ポイント：$totalPoint',
-    );
+    // MsgDialog.showMsgDialog(
+    //   store<NavigationService>().navigatorKey.currentState.overlay.context,
+    //   title: 'ポイントを購入しました',
+    //   content: '購入したポイント：$point'
+    //       '\n合計ポイント：$totalPoint',
+    // );
   }
 
   int type(ProductType type) {
@@ -243,8 +252,10 @@ class PointStore {
   }
 
   Future<bool> postUnLimitPoint(context, String user_code, String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
     if (tablePointSetting == null) await pointSetting();
-    var params = {'token': _token, 'friend_code': user_code, 'friend_id': id};
+    var params = {'token': token, 'friend_code': user_code, 'friend_id': id};
     var response = await unlimitUserApi(_headers, params);
     unlimitResult = 'エラーが発生しました。しばらくたってからやり直してください。';
     unlimitCode = -1;
@@ -268,7 +279,9 @@ class PointStore {
   }
 
   Future<bool> getGiftsSetting() async {
-    var params = {'token': _token};
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
+    var params = {'token': token};
     var response = await pointSettingApi(_headers, params);
     if (response != null) {
       gifts = Gift.listFormJson(response['data']['gifts']);

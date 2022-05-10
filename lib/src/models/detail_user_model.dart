@@ -97,7 +97,7 @@ class Data {
   String height;
   String relationshipStatusId;
   String latitude;
-  String enableAcceptVoiceCall;
+  bool enableAcceptVoiceCall;
   DateTime createdAt;
   String areaName;
   String type;
@@ -112,12 +112,12 @@ class Data {
   String job;
   String avatarUrl;
   String displayname;
-  String enableAcceptVideoCall;
+  bool enableAcceptVideoCall;
   String style;
   String incomeId;
   String birthday;
   String paymentStatus;
-  String enableAcceptDate;
+  bool enableAcceptDate;
   String cityLevel;
   String age;
   String id;
@@ -126,7 +126,7 @@ class Data {
   String ageId;
   DateTime updatedAt;
   String cityName;
-  String enableAcceptMessages;
+  bool enableAcceptMessages;
   String userCode;
   int unlimitPoint;
   int favoriteStatus;
@@ -147,7 +147,7 @@ class Data {
     height: json["height"],
     relationshipStatusId: json["relationship_status_id"],
     latitude: json["latitude"],
-    enableAcceptVoiceCall: json["enable_accept_voice_call"],
+    enableAcceptVoiceCall: json["enable_accept_voice_call"] != '0' ? true : false ,
     createdAt: DateTime.parse(json["created_at"]),
     areaName: json["area_name"],
     type: json["type"],
@@ -162,12 +162,12 @@ class Data {
     job: json["job"],
     avatarUrl: json["avatar_url"],
     displayname: json["displayname"],
-    enableAcceptVideoCall: json["enable_accept_video_call"],
+    enableAcceptVideoCall: json["enable_accept_video_call"] != '0' ? true : false,
     style: json["style"],
     incomeId: json["income_id"],
     birthday: json["birthday"],
     paymentStatus: json["payment_status"],
-    enableAcceptDate: json["enable_accept_date"],
+    enableAcceptDate: json["enable_accept_date"] != '0' ? true : false,
     cityLevel: json["city_level"],
     age: json["age"],
     id: json["id"],
@@ -176,7 +176,7 @@ class Data {
     ageId: json["age_id"],
     updatedAt: DateTime.parse(json["updated_at"]),
     cityName: json["city_name"],
-    enableAcceptMessages: json["enable_accept_messages"],
+    enableAcceptMessages: json["enable_accept_messages"] != '0' ? true : false,
     userCode: json["user_code"],
     unlimitPoint: json["unlimit_point"],
     favoriteStatus: json["favorite_status"],
@@ -237,5 +237,6 @@ class Data {
     "favorite_status": favoriteStatus,
     "image": image,
     "can_call": canCall,
+
   };
 }

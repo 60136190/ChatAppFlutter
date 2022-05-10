@@ -130,16 +130,12 @@ class Device {
   }
 
   Map<String, String> getHeader() => {
-        'X-DEVICE-ID': this.deviceID,
-        'X-OS-TYPE': this.osType,
-        'X-OS-VERSION': this.osVersion,
-        'X-APP-VERSION': this.appVersion,
-        'X-API-ID': this.apiID,
-        'X-API-KEY': this.apiKey,
-        'X-PUSH-TOKEN': this.pushToken,
-        'X-PUSH-VOIP': this.pushVoip,
-        'X-CARRIER-NAME': this.carrierName,
-        'X-CARRIER-CODE': this.carrierCode,
-        'X-DEVICE-NAME': this.deviceName
+            "X-DEVICE-ID": "66db1bce784f051e",
+            "X-OS-TYPE": "android",
+            "X-OS-VERSION": "11",
+            "X-APP-VERSION": "1.0.16",
+            "X-API-ID": "API-ID-PARK-CALL-DEV",
+            "X-API-KEY": "API-KEY-PARK-CALL-DEV",
+            "X-DEVICE-NAME": "RMX3262",
       };
 }

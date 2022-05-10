@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task1/src/controllers/metada_controller.dart';
 import 'package:task1/src/models/metadata_model.dart';
 import 'package:task1/src/respository/meta_data_respository.dart';
-import 'package:task1/src/ui/register_screen.dart';
+import 'package:task1/src/ui/auth/register_screen.dart';
 
 class MetaDataScreen extends StatefulWidget {
   @override

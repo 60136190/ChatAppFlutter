@@ -18,6 +18,7 @@ import 'package:task1/src/models/report_user_model.dart';
 import 'package:task1/src/respository/meta_data_respository.dart';
 import 'package:task1/src/ui/mainscreen/mainscreen.dart';
 import 'package:task1/src/ui/profile/change_profile.dart';
+import 'package:task1/src/ui/test.dart';
 
 import '../chatting_screen.dart';
 
@@ -1060,8 +1061,6 @@ class _DetailScreen extends State<DetailScreen> {
             color: Theme.of(context).canvasColor,
           ),
         ),
-        // onTap: () {
-        // },
       );
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
@@ -1094,19 +1093,9 @@ class _DetailScreen extends State<DetailScreen> {
       "X-DEVICE-NAME": "RMX3262",
     });
     if (responseGetDetailUser.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
       var fetchData = jsonDecode(responseGetDetailUser.body);
-      // setState(() {
-      //   data = fetchData;
-      //   data!.forEach((element) {
-      //     imagesUrl.add(element['image']);
-      //   });
-      //   });
       return DetailUserModel.fromJson(jsonDecode(responseGetDetailUser.body));
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load album');
     }
   }

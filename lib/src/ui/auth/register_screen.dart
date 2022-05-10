@@ -13,7 +13,7 @@ import 'package:task1/src/services/socket_io_client.dart';
 import 'package:task1/src/storages/store.dart';
 import 'package:task1/src/ui/mainscreen/mainscreen.dart';
 
-import 'secondscreen.dart';
+import '../secondscreen.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override

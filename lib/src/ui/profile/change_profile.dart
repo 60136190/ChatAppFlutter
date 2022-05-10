@@ -1,420 +1,774 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:ui';
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task1/src/blocs/edit_profile_bloc.dart';
 import 'package:task1/src/constants/constants.dart';
+import 'package:task1/src/controllers/metada_controller.dart';
+import 'package:task1/src/models/detail_user_model.dart';
+import 'package:task1/src/models/metadata_model.dart';
+import 'package:task1/src/models/profile_model.dart';
+import 'package:task1/src/respository/meta_data_respository.dart';
+import 'package:task1/src/services/limit_text_utf8.dart';
+import 'package:task1/src/storages/store.dart';
+import 'package:task1/src/storages/system_store.dart';
+import 'package:task1/src/themes/themes.dart';
+import 'package:task1/src/ui/mainscreen/profilescreen.dart';
+import 'package:task1/src/ui/mainscreen/tabhome/detailuser.dart';
 
-class ChangeProfile extends StatelessWidget {
+
+class ChangeProfile extends StatefulWidget {
+  static final num numberAvatar = 3;
+  final String idUser;
+  final Profile profile;
+
+  ChangeProfile({Key key, this.profile, @required this.idUser})
+      : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
-        title: Text(
-          'プロファイル編集',
-          style: TextStyle(
-              color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-            onPressed: () => {Navigator.pop(context)},
-            icon: Icon(
-              Icons.chevron_left,
-              size: 30,
-              color: Colors.black,
-            )),
-      ),
-      body: BodyChangeProfile(),
-    );
+  _ChangeProfile createState() => _ChangeProfile();
+}
+
+class _ChangeProfile extends State<ChangeProfile> {
+  EditProfileBloc bloc;
+  SystemStore _systemStore = store<SystemStore>();
+  // int number = 0;
+
+  void onSave() async {
+    bloc.loading.add(true);
+
+    await bloc.updateImage(onUpdateImageSuccess).then((r) {
+      print(r);
+    });
+    bloc.loading.add(false);
+    Navigator.pop(context);
+    store<SystemStore>().hideBottomBar.add(false);
+    //goUp();
   }
-}
 
-class BodyChangeProfile extends StatefulWidget {
-  BodyChangeProfile({Key key}) : super(key: key);
+  void onUpdateImageSuccess(status) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:
+        Text('アバター、自己PRは運営者が審査後に公開されます。', textAlign: TextAlign.center)));
+  }
+
+  void onSuccess(status) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('プロフィールを更新しました。', textAlign: TextAlign.center)));
+  }
+
+  void initState() {
+    super.initState();
+    futureDetailUser = getDetailUser();
+    this.getSWData();
+
+    store<SystemStore>().hideBottomBar.add((true));
+    if (mounted) {
+      // bloc = EditProfileBloc(widget.profile);
+      // bloc.listenStream();
+    }
+  }
 
   @override
-  _BodyChangeProfile createState() => _BodyChangeProfile();
-}
+  void dispose() {
+    // bloc.dispose();
+    controller.dispose();
+    super.dispose();
+  }
 
-class _BodyChangeProfile extends State<BodyChangeProfile> {
-  // List<DropdownMenuItem<String>> address = [
-  //   DropdownMenuItem(
-  //     child: Text('大阪'),
-  //     value: "1",
-  //   ),
-  //   DropdownMenuItem(
-  //     child: Text('北海道'),
-  //     value: '2',
-  //   ),
-  //   DropdownMenuItem(
-  //     child: Text('北海道'),
-  //     value: '3',
-  //   ),
-  // ];
+  TextEditingController controller = TextEditingController();
+  Future<DetailUserModel> futureDetailUser;
 
+  String _myIncome;
+  String _myHeight;
+  String _myJob;
+  String _myStyle;
+
+  List listIncome = [];
+  List listHeight = [];
+  List listJob = [];
+  List listStyle = [];
+  List listAge = [];
+
+  File galleryFile;
+
+  Future imageSelectorGallery() async {
+    try {
+      final galleryFile = (await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        // maxHeight: 50.0,
+        // maxWidth: 50.0,
+      ));
+      if (galleryFile == null) return;
+
+      final imageTemporary = File(galleryFile.path);
+      setState(() {
+        this.galleryFile = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  File galleryFileb;
+
+  Future imageSelectorGalleryb() async {
+    try {
+      final galleryFile = (await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        // maxHeight: 50.0,
+        // maxWidth: 50.0,
+      ));
+      if (galleryFile == null) return;
+
+      final imageTemporary = File(galleryFile.path);
+      setState(() {
+        this.galleryFileb = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  File galleryFilec;
+
+  Future imageSelectorGalleryc() async {
+    try {
+      final galleryFile = (await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        // maxHeight: 50.0,
+        // maxWidth: 50.0,
+      ));
+      if (galleryFile == null) return;
+
+      final imageTemporary = File(galleryFile.path);
+      setState(() {
+        this.galleryFilec = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.all(10),
-              height: 100,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                      flex: 3,
-                      child: CircleAvatar(
-                        radius: 45.0,
-                        backgroundImage: NetworkImage(
-                            'https://image-us.24h.com.vn/upload/4-2019/images/2019-11-14/1573703027-181-0-1573688811-width650height365.jpg'),
-                        backgroundColor: Colors.transparent,
-                      )),
-                  Expanded(
-                      flex: 3,
-                      child: CircleAvatar(
-                        radius: 45.0,
-                        backgroundImage: NetworkImage(
-                            'https://image-us.24h.com.vn/upload/4-2019/images/2019-11-14/1573703027-181-0-1573688811-width650height365.jpg'),
-                        backgroundColor: Colors.transparent,
-                      )),
-                  Expanded(
-                      flex: 3,
-                      child: CircleAvatar(
-                        radius: 45.0,
-                        backgroundImage: NetworkImage(
-                            'https://image-us.24h.com.vn/upload/4-2019/images/2019-11-14/1573703027-181-0-1573688811-width650height365.jpg'),
-                        backgroundColor: Colors.transparent,
-                      )),
-                  SizedBox(
-                    width: 10,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.all(10),
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  '最初の画像がリストに表示されます',
-                  style: TextStyle(color: Colors.black, fontSize: 13),
+    var metaDataController = MetaDataController(MetaDataRespository());
+    metaDataController.fetchIncomeList();
+    return FutureBuilder<DetailUserModel>(
+        future: getDetailUser(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            String imagea = snapshot.data.data.image[0];
+            String imageb = snapshot.data.data.image[1];
+            String imagec = snapshot.data.data.image[2];
+            String ageId = snapshot.data.data.ageId;
+            String sex_id = snapshot.data.data.sexId;
+            String height = snapshot.data.data.heightId;
+
+            String style = "";
+
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                elevation: 1,
+                title: Text(
+                  'プロファイル編集',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
+                centerTitle: true,
+                leading: IconButton(
+                    onPressed: () => {Navigator.pop(context)},
+                    icon: Icon(
+                      Icons.chevron_left,
+                      size: 30,
+                      color: Colors.black,
+                    )),
               ),
-            ),
-            Container(
-              color: Colors.black38,
-              padding: EdgeInsets.only(left: 10),
-              height: 40,
-              child: Row(
-                children: [
-                  Text(
-                    '自己紹介(最大500文字)',
-                    style: TextStyle(color: Colors.white, fontSize: 13),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              color: Colors.white,
-              height: 100,
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                textInputAction: TextInputAction.newline,
-                keyboardType: TextInputType.multiline,
-                minLines: 1,
-                maxLines: null,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: '入ってください',
-                ),
-              ),
-            ),
-            Container(
-              color: Colors.black38,
-              padding: EdgeInsets.only(left: 10),
-              height: 40,
-              child: Row(
-                children: [
-                  Text(
-                    'ファイル',
-                    style: TextStyle(color: Colors.white, fontSize: 13),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 10),
-              color: Colors.white,
-              height: 55,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 4,
-                    child: Text('ニックネーム'),
-                  ),
-                  Expanded(
-                    flex: 6,
-                    child: Text('thainam'),
-                  ),
-                ],
-              ),
-            ),
-            Barline(),
-            Container(
-              padding: EdgeInsets.only(left: 10),
-              color: Colors.white,
-              height: 55,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 4,
-                    child: Text('性別'),
-                  ),
-                  Expanded(
-                    flex: 6,
-                    child: Text('男性'),
-                  ),
-                ],
-              ),
-            ),
-            Barline(),
-            Container(
-              padding: EdgeInsets.only(left: 10),
-              color: Colors.white,
-              height: 55,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 4,
-                    child: Text('年'),
-                  ),
-                  Expanded(
-                    flex: 6,
-                    child: Text('20年~30年'),
-                  ),
-                ],
-              ),
-            ),
-            Barline(),
-            Container(
-              padding: EdgeInsets.only(left: 10),
-              color: Colors.white,
-              height: 55,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 4,
-                    child: Text('地域'),
-                  ),
-                  Expanded(
-                    flex: 6,
-                    child: Text('東京都'),
-                  ),
-                ],
-              ),
-            ),
-            Barline(),
-            // Chiều cao
-            Container(
-              padding: EdgeInsets.only(left: 10),
-              color: Colors.white,
-              height: 55,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 4,
-                    child: Text('身長'),
-                  ),
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      padding: EdgeInsets.only(right: 10),
-                      child: DropdownButtonFormField<String>(
-                        hint: Text('末設定'),
-                        icon: Icon(Icons.chevron_right, size: 20,color: Colors.black12,),
-                        items: age
-                            .map((address) => DropdownMenuItem<String>(
-                          child: Text(address.toString()),
-                          value: address,
-                        ))
-                            .toList(),
-                        onChanged: (value) {},
-                        decoration: InputDecoration(
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '情報を入力してください';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Barline(),
-            // thân hình
-            Container(
-              padding: EdgeInsets.only(left: 10),
-              color: Colors.white,
-              height: 55,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 4,
-                    child: Text('体'),
-                  ),
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      padding: EdgeInsets.only(right: 10),
-                      child: DropdownButtonFormField<String>(
-                        hint: Text('末設定'),
-                        icon: Icon(Icons.chevron_right, size: 20,color: Colors.black12,),
-                        items: body
-                            .map((body) => DropdownMenuItem<String>(
-                          child: Text(body.toString()),
-                          value: body,
-                        ))
-                            .toList(),
-                        onChanged: (value) {},
-                        decoration: InputDecoration(
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '情報を入力してください';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Barline(),
-            // nghề nghiệp
-            Container(
-              padding: EdgeInsets.only(left: 10),
-              color: Colors.white,
-              height: 55,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 4,
-                    child: Text('専門的に'),
-                  ),
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      padding: EdgeInsets.only(right: 10),
-                      child: DropdownButtonFormField<String>(
-                        hint: Text('末設定'),
-                        icon: Icon(Icons.chevron_right, size: 20,color: Colors.black12,),
-                        items: job
-                            .map((job) => DropdownMenuItem<String>(
-                          child: Text(job.toString()),
-                          value: job,
-                        ))
-                            .toList(),
-                        onChanged: (value) {},
-                        decoration: InputDecoration(
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '情報を入力してください';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Barline(),
-            // lương hằng năm
-            Container(
-              padding: EdgeInsets.only(left: 10),
-              color: Colors.white,
-              height: 55,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 4,
-                    child: Text('年収'),
-                  ),
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      padding: EdgeInsets.only(right: 10),
-                      child: DropdownButtonFormField<String>(
-                            hint: Text('末設定'),
-                            icon: Icon(Icons.chevron_right, size: 20,color: Colors.black12,),
-                            items: salary
-                                .map((salary) => DropdownMenuItem<String>(
-                              child: Text(salary.toString()),
-                              value: salary,
-                            ))
-                                .toList(),
-                            onChanged: (value) {},
-                            decoration: InputDecoration(
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return '情報を入力してください';
-                              }
-                              return null;
-                            },
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      height: 100,
+                      child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 10,
                           ),
+                          Container(
+                              margin: EdgeInsets.all(5),
+                              width: 300,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            imageSelectorGallery();
+                                          },
+                                          child: galleryFile == null
+                                              ? ClipRRect(
+                                                  child: Image.network(imagea),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100.0),
+                                                )
+                                              : ClipRRect(
+                                                  child:
+                                                      Image.file(galleryFile),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100.0),
+                                                ))),
+                                  Expanded(
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            imageSelectorGalleryb();
+                                          },
+                                          child: galleryFileb == null
+                                              ? ClipRRect(
+                                                  child: Image.network(imageb),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100.0),
+                                                )
+                                              : ClipRRect(
+                                                  child:
+                                                      Image.file(galleryFileb),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100.0),
+                                                ))),
+                                  Expanded(
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            imageSelectorGalleryc();
+                                          },
+                                          child: galleryFilec == null
+                                              ? ClipRRect(
+                                                  child: Image.network(imagec),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100.0),
+                                                )
+                                              : ClipRRect(
+                                                  child:
+                                                      Image.file(galleryFilec),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100.0),
+                                                ))),
+                                ],
+                              )),
+                          SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                margin: EdgeInsets.all(20),
-                width: 250,
-                height: 45,
-                child: ElevatedButton(
-                  onPressed: () => {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("プロファイルを更新しました。"),
-                    duration: const Duration(seconds: 1),
-                  )),
-                    Navigator.pop(context),
-                  },
-                  child: Text(
-                    'このコンテンツで保存',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: kPurple,
-                    onPrimary: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(35.0),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '最初の画像がリストに表示されます',
+                          style: TextStyle(color: Colors.black, fontSize: 13),
+                        ),
+                      ),
                     ),
-                  ),
+                    Container(
+                      color: Colors.black38,
+                      padding: EdgeInsets.only(left: 10),
+                      height: 40,
+                      child: Row(
+                        children: [
+                          Text(
+                            '自己紹介(最大500文字)',
+                            style: TextStyle(color: Colors.white, fontSize: 13),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: TextField(
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                          controller: controller,
+                          style:
+                              TextStyle(fontFamily: MyTheme.fontHiraKakuProW3),
+                          decoration: InputDecoration(
+                              hintText: '自己紹介文を入力',
+                              hintStyle: TextStyle(
+                                  fontSize: 13, color: Color(0xFFdfdfe6)),
+                              contentPadding: EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                              ),
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              focusedErrorBorder: InputBorder.none),
+                          maxLines: 2,
+                          keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            Utf8LengthLimitingTextInputFormatter(500)
+                          ]),
+                    ),
+                    Container(
+                      color: Colors.black38,
+                      padding: EdgeInsets.only(left: 10),
+                      height: 40,
+                      child: Row(
+                        children: [
+                          Text(
+                            'ファイル',
+                            style: TextStyle(color: Colors.white, fontSize: 13),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      color: Colors.white,
+                      height: 55,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 4,
+                            child: Text('ニックネーム'),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: Text(snapshot.data.data.displayName),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Barline(),
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      color: Colors.white,
+                      height: 55,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 4,
+                            child: Text('性別'),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: FutureBuilder<List<Age>>(
+                                future: metaDataController.fetchSexList(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(child: Progress());
+                                  }
+                                  if (snapshot.hasError) {
+                                    return Center(child: Text('error'));
+                                  }
+                                  for (int i = 0;
+                                      i < snapshot.data.length;
+                                      i++) {
+                                    if (sex_id == snapshot.data[i].fieldId) {
+                                      String style = snapshot.data[i].name;
+
+                                      return Text('$style');
+                                    }
+                                  }
+                                  return Text('未設定');
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Barline(),
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      color: Colors.white,
+                      height: 55,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 4,
+                            child: Text('年'),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: FutureBuilder<List<Age>>(
+                                future: metaDataController.fetchAgeList(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(child: Progress());
+                                  }
+                                  if (snapshot.hasError) {
+                                    return Center(child: Text('error'));
+                                  }
+                                  for (int i = 0;
+                                      i < snapshot.data.length;
+                                      i++) {
+                                    if (ageId == snapshot.data[i].fieldId) {
+                                      String style = snapshot.data[i].name;
+
+                                      return Text('$style');
+                                    }
+                                  }
+                                  return Text('未設定');
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Barline(),
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      color: Colors.white,
+                      height: 55,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 4,
+                            child: Text('地域'),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: Text(snapshot.data.data.areaName +
+                                snapshot.data.data.cityName),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Barline(),
+                    // Chiều cao
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      color: Colors.white,
+                      height: 55,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 4,
+                            child: Text('身長'),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: Container(
+                              padding: EdgeInsets.only(right: 10),
+                              child: DropdownButtonFormField<String>(
+                                value: _myHeight,
+                                hint: Text(height),
+                                icon: Icon(
+                                  Icons.chevron_right,
+                                  size: 20,
+                                ),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _myHeight = newValue;
+                                    getSWData();
+                                    print(_myHeight);
+                                  });
+                                },
+                                items: listHeight.map((item) {
+                                  return new DropdownMenuItem(
+                                    child: new Text(item['name']),
+                                    value: item['value'].toString(),
+                                  );
+                                }).toList(),
+                                decoration:
+                                    InputDecoration(border: InputBorder.none),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return '情報を入力してください';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Barline(),
+                    // thân hình
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      color: Colors.white,
+                      height: 55,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 4,
+                            child: Text('体'),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: Container(
+                              padding: EdgeInsets.only(right: 10),
+                              child: DropdownButtonFormField<String>(
+                                value: _myStyle,
+                                hint: Text('年代'),
+                                icon: Icon(
+                                  Icons.chevron_right,
+                                  size: 20,
+                                ),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _myStyle = newValue;
+                                    getSWData();
+                                    print(_myStyle);
+                                  });
+                                },
+                                items: listStyle.map((item) {
+                                  return new DropdownMenuItem(
+                                    child: new Text(item['name']),
+                                    value: item['value'].toString(),
+                                  );
+                                }).toList(),
+                                decoration:
+                                    InputDecoration(border: InputBorder.none),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return '情報を入力してください';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Barline(),
+                    // nghề nghiệp
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      color: Colors.white,
+                      height: 55,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 4,
+                            child: Text('専門的に'),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: Container(
+                              padding: EdgeInsets.only(right: 10),
+                              child: DropdownButtonFormField<String>(
+                                value: _myJob,
+                                hint: Text('年代'),
+                                icon: Icon(
+                                  Icons.chevron_right,
+                                  size: 20,
+                                ),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _myJob = newValue;
+                                    getSWData();
+                                    print(_myJob);
+                                  });
+                                },
+                                items: listJob.map((item) {
+                                  return new DropdownMenuItem(
+                                    child: new Text(item['name']),
+                                    value: item['value'].toString(),
+                                  );
+                                }).toList(),
+                                decoration:
+                                    InputDecoration(border: InputBorder.none),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return '情報を入力してください';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Barline(),
+                    // lương hằng năm
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      color: Colors.white,
+                      height: 55,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 4,
+                            child: Text('年収'),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: Container(
+                              padding: EdgeInsets.only(right: 10),
+                              child: DropdownButtonFormField<String>(
+                                value: _myIncome,
+                                hint: Text('年代'),
+                                icon: Icon(
+                                  Icons.chevron_right,
+                                  size: 20,
+                                ),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _myIncome = newValue;
+                                    getSWData();
+                                    print(_myIncome);
+                                  });
+                                },
+                                items: listIncome.map((item) {
+                                  return new DropdownMenuItem(
+                                    child: new Text(item['name']),
+                                    value: item['value'].toString(),
+                                  );
+                                }).toList(),
+                                decoration:
+                                    InputDecoration(border: InputBorder.none),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return '情報を入力してください';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        margin: EdgeInsets.all(20),
+                        width: 250,
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: () => {
+                            // updateProfile(_myHeight, _myJob, _myIncome,
+                            //     _myStyle, controller.text.toString()),
+                            this.onSave(),
+                          },
+                          child: Text(
+                            'このコンテンツで保存',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: kPurple,
+                            onPrimary: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(35.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            )
-          ],
-        ),
-      ),
-    );
+            );
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+          return const Center(
+              child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(kPink),
+          ));
+        });
   }
+
+  Future<DetailUserModel> getDetailUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    String device_id_android = prefs.getString('device_id_android');
+    String token = prefs.getString('token');
+    var url = Uri.parse(
+        '$detailUserUrl/api/user/show?screen=profile&footprint=true&exclude_point_action=1&order=DESC&token=${token}&id=${widget.idUser}');
+    var responseGetDetailUser = await http.get(url, headers: {
+      "X-DEVICE-ID": "$device_id_android",
+      "X-OS-TYPE": "android",
+      "X-OS-VERSION": "11",
+      "X-APP-VERSION": "1.0.16",
+      "X-API-ID": "API-ID-PARK-CALL-DEV",
+      "X-API-KEY": "API-KEY-PARK-CALL-DEV",
+      "X-DEVICE-NAME": "RMX3262",
+    });
+    if (responseGetDetailUser.statusCode == 200) {
+      var fetchData = jsonDecode(responseGetDetailUser.body);
+      return DetailUserModel.fromJson(jsonDecode(responseGetDetailUser.body));
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+
+  String domainUrl = "http://59.106.218.175:8086";
+
+  Future<String> getSWData() async {
+    final prefs = await SharedPreferences.getInstance();
+    String device_id_android = prefs.getString('device_id_android');
+    var url = Uri.parse('$domainUrl/api/metadata');
+    var res = await http.get(url, headers: {
+      "X-DEVICE-ID": "$device_id_android",
+      "X-OS-TYPE": "android",
+      "X-OS-VERSION": "11",
+      "X-APP-VERSION": "1.0.16",
+      "X-API-ID": "API-ID-PARK-CALL-DEV",
+      "X-API-KEY": "API-KEY-PARK-CALL-DEV",
+      "X-DEVICE-NAME": "RMX3262",
+    });
+    var resBody = json.decode(res.body);
+    var resStyle = resBody['data']['user_profile_list']['style'];
+    var resIncome = resBody['data']['user_profile_list']['income'];
+    var resJob = resBody['data']['user_profile_list']['job'];
+    var resHeight = resBody['data']['user_profile_list']['height'];
+    var resAge = resBody['data']['user_profile_list']['age'];
+
+    var resArea = resBody['data']['user_profile_list']['area'].values.toList();
+    setState(() {
+      listIncome = resIncome;
+      listHeight = resHeight;
+      listJob = resJob;
+      listStyle = resStyle;
+      listAge = resAge;
+    });
+
+    return "Sucess";
+  }
+
+  Future<String> updateProfile(
+      String height, job, income, style, status) async {
+    final prefs = await SharedPreferences.getInstance();
+    String device_id_android = prefs.getString('device_id_android');
+    String token = prefs.getString("token");
+    var url = Uri.parse('$domainUrl/api/user/update');
+    var res = await http.post(url, headers: {
+      "X-DEVICE-ID": "$device_id_android",
+      "X-OS-TYPE": "android",
+      "X-OS-VERSION": "11",
+      "X-APP-VERSION": "1.0.16",
+      "X-API-ID": "API-ID-PARK-CALL-DEV",
+      "X-API-KEY": "API-KEY-PARK-CALL-DEV",
+      "X-DEVICE-NAME": "RMX3262",
+    }, body: {
+      "token": token,
+      "height": height,
+      "job": job,
+      "income": income,
+      "style": style,
+      "user_status": status
+    });
+    return "Sucess";
+  }
+
 }
 
 class Barline extends StatelessWidget {
@@ -436,9 +790,3 @@ class Barline extends StatelessWidget {
     ));
   }
 }
-
-List<String> _address = ['男', '女性',];
-List<String> body = ['スリム', '定期的','ナイスボディ','少しぽっちゃり','肥満','秘密'];
-List<String> salary = ['100万円未満', '100万円','200万円','300万円','400万円','500万円','秘密'];
-List<String> job = ['瞳', '学生','オフィススタッフ','ソフトウェアエンジニア','先生','他の'];
-List<String> age = ['20', '20~24', '25~29', '30~34', '35~39', '40~44', '45~49', '50~54', '55~59', '60~64', '65~69', '70'];

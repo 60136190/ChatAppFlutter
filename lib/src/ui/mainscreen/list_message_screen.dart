@@ -9,6 +9,7 @@ import 'package:task1/src/respository/list_message_respository.dart';
 import 'package:task1/src/respository/meta_data_respository.dart';
 import 'package:task1/src/services/socket_io_client.dart';
 import 'package:task1/src/ui/mainscreen/campaign_screen.dart';
+import 'package:task1/src/ui/mainscreen/chatting_screen.dart';
 import 'package:task1/src/ui/mainscreen/notice_screen.dart';
 import 'package:task1/src/ui/mainscreen/tabhome/detailuser.dart';
 import 'package:badges/badges.dart';
@@ -28,8 +29,6 @@ class _ListMessageScreen extends State<ListMessageScreen> {
         future: listMessageController.fetchListNotice(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            // SocketIo().createSocket('038e91e67826b65c8df97647703cfe99');
-            // print('SOCKETIOOOOOOOOOOOOOOOOOOOOOOO${SocketIo().createSocket('038e91e67826b65c8df97647703cfe99')}');
             String total_unread_notice = snapshot.data.data.totalUnreadNotice.toString();
             String total_unread_campaign = snapshot.data.data.totalUnreadCampaign.toString();
             return SafeArea(
@@ -104,6 +103,11 @@ class _ListMessageScreen extends State<ListMessageScreen> {
                                       flex: 2,
                                       child:  InkWell(
                                         onTap: () => {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => ChattingScreen(
+                                                      user_id: '${snapshot.data[index].userId}', user_code:'${snapshot.data[index].userCode}')))
                                         },
                                         child: CircleAvatar(
                                           radius: 30.0,

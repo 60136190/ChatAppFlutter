@@ -1,11 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task1/src/models/point_package_model.dart';
 import 'package:task1/src/storages/point_store.dart';
 import 'package:task1/src/storages/store.dart';
-
 import 'bloc.dart';
 
 class PointBloc {
@@ -45,22 +45,22 @@ class PointBloc {
 
     _conectionSubscription =
         FlutterInappPurchase.connectionUpdated.listen((connected) {
-      print('connected: $connected');
-    });
+          print('connected: $connected');
+        });
 
     _purchaseUpdatedSubscription =
         FlutterInappPurchase.purchaseUpdated.listen((productItem) async {
-      print('purchase-updated: $productItem');
-      await _pointStore.verifyPurchase(productItem);
-      totalPoint.add(store<PointStore>().totalPoint);
-      loading.add(false);
-    });
+          print('purchase-updated: $productItem');
+          await _pointStore.verifyPurchase(productItem);
+          totalPoint.add(store<PointStore>().totalPoint);
+          loading.add(false);
+        });
 
     _purchaseErrorSubscription =
         FlutterInappPurchase.purchaseError.listen((purchaseError) {
-      print('purchase-error: $purchaseError');
-      loading.add(false);
-    });
+          print('purchase-error: $purchaseError');
+          loading.add(false);
+        });
 
     print('connect to Store: $result');
 
@@ -71,7 +71,7 @@ class PointBloc {
   void getProduct() async {
     try {
       List<IAPItem> productItems =
-          await FlutterInappPurchase.instance.getProducts(_kProductIds);
+      await FlutterInappPurchase.instance.getProducts(_kProductIds);
       print('getProduct:: $productItems');
     } catch (err) {
       print('error get product: $err');
@@ -81,7 +81,7 @@ class PointBloc {
   void getAvailablePurchases() async {
     try {
       List<PurchasedItem> purchaseItems =
-          await FlutterInappPurchase.instance.getAvailablePurchases();
+      await FlutterInappPurchase.instance.getAvailablePurchases();
       print('number restore: ${purchaseItems.length}');
 
       if (purchaseItems.length > 0) {

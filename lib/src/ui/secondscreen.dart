@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/constants.dart';
-import 'register_screen.dart';
+import 'auth/register_screen.dart';
 import 'mainscreen/mainscreen.dart';
 
 class SecondScreen extends StatefulWidget {

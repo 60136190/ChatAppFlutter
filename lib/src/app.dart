@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task1/src/ui/register_screen.dart';
+import 'package:task1/src/ui/auth/register_screen.dart';
 import 'package:task1/src/ui/start_screen.dart';
 import 'package:task1/src/ui/metadata_screen.dart';
 import 'package:task1/src/ui/test.dart';

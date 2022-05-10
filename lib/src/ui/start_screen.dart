@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task1/src/constants/asset_image.dart';
 import 'package:task1/src/constants/constants.dart';
 import 'package:task1/src/ui/mainscreen/mainscreen.dart';
-import 'package:task1/src/ui/register_screen.dart';
+import 'package:task1/src/ui/auth/register_screen.dart';
 
 class StartScreen extends StatefulWidget {
   @override
@@ -36,9 +37,9 @@ class _StartScreen extends State<StartScreen> {
 
   // // get id device
   String
-      // deviceName = "",
-      //     deviceVersion = "",
-      identifier = "";
+  // deviceName = "",
+  //     deviceVersion = "",
+  identifier = "";
   Future<void> getDeviceDetail() async {
     final prefs = await SharedPreferences.getInstance();
     final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
@@ -71,35 +72,38 @@ class _StartScreen extends State<StartScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset(
-          "assets/images/app_splash.png",
-          fit: BoxFit.fill,
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              image:DecorationImage(image: ImageAssets.splashIcon, fit: BoxFit.fill)
+          ),
         ),
-      Container(
-        margin: EdgeInsets.only(top: 700, left: 20),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Text(
-                    'Version 1.0.16',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        decoration: TextDecoration.none),
-                  ),
+
+        Container(
+          margin: EdgeInsets.only(top: 700, left: 20),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Text(
+                  'Version 1.0.16',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      decoration: TextDecoration.none),
                 ),
-                Expanded(
-                    flex: 7,
-                    child: Container(
-                      margin: EdgeInsets.only(right: 140),
-                      child: SpinKitThreeBounce(
-                        color: kPink,
-                        size: 25,
-                      ),
-                    )),
-              ],
-            ),
+              ),
+              Expanded(
+                  flex: 7,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 140),
+                    child: SpinKitThreeBounce(
+                      color: kPink,
+                      size: 25,
+                    ),
+                  )),
+            ],
+          ),
         ),
         // Container(
         //   margin: EdgeInsets.all(20),

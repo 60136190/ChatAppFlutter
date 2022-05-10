@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image/image.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task1/src/apis/my_page_api.dart';
 import 'package:task1/src/apis/update_image_profile_api.dart';
 import 'package:task1/src/apis/update_message_template_api.dart';
@@ -12,9 +13,7 @@ import 'package:task1/src/apis/update_profile_api.dart';
 import 'package:task1/src/models/profile_model.dart';
 import 'package:task1/src/storages/point_store.dart';
 import 'package:task1/src/storages/system_store.dart';
-
 import 'auth_store.dart';
-
 import 'store.dart';
 
 class MyPageStore {
@@ -24,8 +23,11 @@ class MyPageStore {
   Profile profileCache;
 
   Future<Profile> getMyPage() async {
+    print('Vao chua');
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
     var params = {
-      'token': _authStore.userLoginData.token,
+      'token': token,
     };
 
     profileCache = await getMyPageApi(_systemStore.currentDevice.getHeader(), params);
@@ -35,7 +37,9 @@ class MyPageStore {
 
   Future<String> updateProfile(Map update, {Function onSuccess}) async {
     var params = update;
-    params['token'] = _authStore.userLoginData.token;
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
+    params['token'] = token;
 
     var message =
     await updateProfileApi(_systemStore.currentDevice.getHeader(), params);
@@ -72,6 +76,8 @@ class MyPageStore {
         // Compress Image file
         var dataImage = await FlutterImageCompress.compressWithFile(file.path, minWidth: 850, quality: 90);
 
+        print("========== ${dataImage}");
+        print("========== ${dataImage.length}");
         if (dataImage.length <= 5242880) {
           var fileName = _imgName + '.jpg';
           var fileType = 'jpg';

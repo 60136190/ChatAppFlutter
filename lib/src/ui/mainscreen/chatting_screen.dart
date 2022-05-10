@@ -1,23 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task1/src/blocs/chatting_bloc.dart';
 import 'package:task1/src/constants/constants.dart';
-import 'package:task1/src/controllers/metada_controller.dart';
 import 'package:task1/src/models/detail_user_model.dart';
-import 'package:task1/src/models/metadata_model.dart';
-import 'package:task1/src/respository/meta_data_respository.dart';
 import 'package:task1/src/services/socket_io_client.dart';
 import 'package:task1/src/storages/store.dart';
 import 'package:task1/src/storages/system_store.dart';
 import 'package:task1/src/themes/themes.dart';
-import 'package:task1/src/ui/mainscreen/tabhome/detailuser.dart';
-import 'package:task1/src/ui/mainscreen/tabhome/leadingaddscreen.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:http/http.dart' as http;
 import 'package:task1/src/utils/utils.dart';
 import 'package:task1/src/widgets/my_button.dart';
 
@@ -246,14 +241,15 @@ class _ChattingScreen extends State<ChattingScreen> {
                               final _listData = data.reversed.toList();
                                 print('aaaaaaaaaaaaaaa${data[0]["u_id"]}');
                                 print('bbbbbbbbbbbbbbb${data[0]["time"]}');
-                                print('cccccccccccccccc${_socket.setReadMessage(int.parse(data[0]["u_id"]),data[0]["time"])}');
                               return Padding(
                                   padding: const EdgeInsets.all(10),
+
                                   child: Column(
                                     children: [
+                                      if(data[index]["u_id"] == widget.user_id)
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                               MainAxisAlignment.start,
                                         children: [
                                           Card(
                                               child: Container(
@@ -267,12 +263,15 @@ class _ChattingScreen extends State<ChattingScreen> {
                                                           Alignment.center,
                                                       child: Text(
                                                           _listData[index]
-                                                              ["msg"]))))
+                                                              ["msg"])
+                                                  ))),
+
                                         ],
                                       ),
+                                      if(data[index]["u_id"] == widget.user_id)
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                            MainAxisAlignment.start,
                                         children: [
                                           Container(
                                               margin: EdgeInsets.only(right: 5),
@@ -283,7 +282,45 @@ class _ChattingScreen extends State<ChattingScreen> {
                                                     fontSize: 12),
                                               ))
                                         ],
-                                      )
+                                      ),
+                                      if(data[index]["u_id"] != widget.user_id)
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: [
+                                            Card(
+                                                child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: 10,
+                                                        right: 10,
+                                                        top: 10,
+                                                        bottom: 10),
+                                                    child: Align(
+                                                        alignment:
+                                                        Alignment.center,
+                                                        child: Text(
+                                                            _listData[index]
+                                                            ["msg"])
+
+                                                    )))
+                                          ],
+                                        ),
+                                      if(data[index]["u_id"] != widget.user_id)
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                                margin: EdgeInsets.only(right: 5),
+                                                child: Text(
+                                                  '${Utils.timeToString(int.parse(_listData[index]["time"]))}',
+                                                  style: TextStyle(
+                                                      color: Colors.black38,
+                                                      fontSize: 12),
+                                                ))
+                                          ],
+                                        ),
+
                                     ],
                                   ));
                             },
