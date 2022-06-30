@@ -35,7 +35,7 @@ class _TabD extends State<TabD> {
                             child: InkWell(
                               onTap: () => {
                                 Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => DetailScreen(text: '${snapshot.data[index].id}'),)),
+                                    MaterialPageRoute(builder: (context) => DetailScreen(userChatId: '${snapshot.data[index].id}'),)),
                               },
                               child:ClipRRect(
                                 child: Image.network(

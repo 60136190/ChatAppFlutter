@@ -60,7 +60,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 // Here is the main works start
                 child: Container(
                   child: Stack(
-                    overflow: Overflow.visible,
                     children: [
                       Icon(
                         icon,
@@ -159,7 +158,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           children: <Widget>[
                             Container(
                               child: Stack(
-                                overflow: Overflow.visible,
                                 children: [
                                   Icon(
                                     Icons.messenger_outline,

@@ -51,6 +51,9 @@ class MyPageStore {
   }
 
   Future updateImage(List<File> files, {Function onSuccess}) async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
+
     List<String> error = [];
     String message = '';
 
@@ -85,7 +88,7 @@ class MyPageStore {
 
           final params = {
             'name': 'images[$index]',
-            'token': _authStore.userLoginData.token,
+            'token': token,
             'filename': fileName ?? '',
             'data': dataImage,
             'type': fileType ?? '',

@@ -124,35 +124,35 @@ class PointStore {
       return true;
     }
 
-    if (showDialog) await showDialogNotEnoughPoint(context);
+    // if (showDialog) await showDialogNotEnoughPoint(context);
 
     return false;
   }
 
-  Future showDialogNotEnoughPoint(context,
-      {bool hideBottomBar, isLoading}) async {
-    final prefs = await SharedPreferences.getInstance();
-    String token = prefs.getString('token');
-    if (!store<SystemStore>().serverState.reviewMode) {
-      if (isLoading != null) isLoading.add(true);
-
-      adWall = await getAdwallInfoApi(token, true);
-
-      if (isLoading != null) isLoading.add(false);
-    }
-    await showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) => DialogNotEnoughPoint(
-        adwallShow: !store<SystemStore>().serverState.reviewMode
-            ? adWall?.enable ?? false
-            : false,
-        adwallImage: adWall?.banner ?? null,
-        adwallURL: adWall?.url ?? null,
-        hideBottomBar: hideBottomBar,
-      ),
-    );
-  }
+  // Future showDialogNotEnoughPoint(context,
+  //     {bool hideBottomBar, isLoading}) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   String token = prefs.getString('token');
+  //   if (!store<SystemStore>().serverState.reviewMode) {
+  //     if (isLoading != null) isLoading.add(true);
+  //
+  //     adWall = await getAdwallInfoApi(token, true);
+  //
+  //     if (isLoading != null) isLoading.add(false);
+  //   }
+  //   await showDialog(
+  //     barrierDismissible: false,
+  //     context: context,
+  //     builder: (context) => DialogNotEnoughPoint(
+  //       adwallShow: !store<SystemStore>().serverState.reviewMode
+  //           ? adWall?.enable ?? false
+  //           : false,
+  //       adwallImage: adWall?.banner ?? null,
+  //       adwallURL: adWall?.url ?? null,
+  //       hideBottomBar: hideBottomBar,
+  //     ),
+  //   );
+  // }
 
   bool payPoint(String slug) {
     print('totalPoint before paypoint::: $totalPoint');
@@ -228,12 +228,13 @@ class PointStore {
   }
 
   void showPurchaseUI(point) {
-    // MsgDialog.showMsgDialog(
-    //   store<NavigationService>().navigatorKey.currentState.overlay.context,
-    //   title: 'ポイントを購入しました',
-    //   content: '購入したポイント：$point'
-    //       '\n合計ポイント：$totalPoint',
-    // );
+
+    MsgDialog.showMsgDialog(
+      store<NavigationService>().navigatorKey.currentState.overlay.context,
+      title: 'ポイントを購入しました',
+      content: '購入したポイント：$point'
+          '\n合計ポイント：$totalPoint',
+    );
   }
 
   int type(ProductType type) {

@@ -23,8 +23,9 @@ import 'package:task1/src/ui/test.dart';
 import '../chatting_screen.dart';
 
 class DetailScreen extends StatefulWidget {
-  final String text;
-  DetailScreen({Key key, @required this.text}) : super(key: key);
+  final String userChatId;
+  final String userChatCode;
+  DetailScreen({Key key, @required this.userChatId,@required this.userChatCode}) : super(key: key);
 
   @override
   _DetailScreen createState() => _DetailScreen();
@@ -126,7 +127,7 @@ class _DetailScreen extends State<DetailScreen> {
   FavoriteUserModel favoriteUserModel;
   BlockUserModel blockUserModel;
 
-  void initState() {
+  void initState()  {
     super.initState();
     futureDetailUser = getDetailUser();
     getDetailUser();
@@ -141,6 +142,7 @@ class _DetailScreen extends State<DetailScreen> {
   final controller = CarouselController();
   int activeIndex = 0;
 
+
   @override
   Widget build(BuildContext context) {
     var metaDataController = MetaDataController(MetaDataRespository());
@@ -149,6 +151,7 @@ class _DetailScreen extends State<DetailScreen> {
         future: getDetailUser(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            print('IDDDDDDDDDDDDDDDDDDD${snapshot.data.data.id} '' ${snapshot.data.data.userCode}');
             String age_id = snapshot.data.data.ageId;
             String sex_id = snapshot.data.data.sexId;
             String height_id = snapshot.data.data.heightId;
@@ -158,7 +161,6 @@ class _DetailScreen extends State<DetailScreen> {
             String favorites_id = snapshot.data.data.id;
             String favorites_user_code = snapshot.data.data.userCode;
             int favorites_status = snapshot.data.data.favoriteStatus;
-
             String imagea = snapshot.data.data.image[0];
             String imageb = snapshot.data.data.image[1];
             String imagec = snapshot.data.data.image[2];
@@ -979,7 +981,7 @@ class _DetailScreen extends State<DetailScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => ChattingScreen(
-                                              user_id: '${favorites_id}', user_code:'${favorites_user_code}')))
+                                              user_id: '${favorites_id}', user_code:'${favorites_user_code}', avatarUrl:'${imagea}'))),
                                 },
                                 style: ElevatedButton.styleFrom(
                                   primary: kPurple,
@@ -1081,8 +1083,10 @@ class _DetailScreen extends State<DetailScreen> {
     final prefs = await SharedPreferences.getInstance();
     String device_id_android = prefs.getString('device_id_android');
     String token = prefs.getString('token');
+    prefs.setString("userChatId", widget.userChatId);
+    prefs.setString("userChatCode", widget.userChatCode);
     var url = Uri.parse(
-        '$detailUserUrl/api/user/show?screen=profile&footprint=true&exclude_point_action=1&order=DESC&token=${token}&id=${widget.text}');
+        '$detailUserUrl/api/user/show?screen=profile&footprint=true&exclude_point_action=1&order=DESC&token=${token}&id=${widget.userChatId}');
     var responseGetDetailUser = await http.get(url, headers: {
       "X-DEVICE-ID": "$device_id_android",
       "X-OS-TYPE": "android",
@@ -1094,6 +1098,7 @@ class _DetailScreen extends State<DetailScreen> {
     });
     if (responseGetDetailUser.statusCode == 200) {
       var fetchData = jsonDecode(responseGetDetailUser.body);
+
       return DetailUserModel.fromJson(jsonDecode(responseGetDetailUser.body));
     } else {
       throw Exception('Failed to load album');

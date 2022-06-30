@@ -1,0 +1,6 @@
+class FireBaseConfig {
+  static const String FCM_SENDER_ID = "458978736253";
+  static const String FCM_SERVER_KEY = "AAAAat1DuH0:APA91bHZad8-6QfKvPfvft8_Le2_ufeefDyn82B6i2LcPqp-xSN1mz3RZBOcOYbrFExEikP8aAfi03DUukGZ67-balGXjhbfo9WbAA5BRtBymLDdy9C0NhjkpgqdJeIwFip_tsraVGGo";
+  static const String DEFAULT_NOTIFICATION_CHANNEL_ID = "DEFAULT_NOTIFICATION_CHANNEL_ID";
+  static const String DEFAULT_NOTIFICATION_CHANNEL_NAME = "DEFAULT_NOTIFICATION_CHANNEL_NAME";
+}

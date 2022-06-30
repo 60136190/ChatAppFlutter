@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:task1/src/ui/mypage/edit_profile_screen.dart';
+import 'package:task1/src/utils/ng_words.dart' as NGWords;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,14 +13,15 @@ import 'package:task1/src/storages/auth_store.dart';
 import 'package:task1/src/storages/mypage_store.dart';
 import 'package:task1/src/storages/store.dart';
 import 'package:task1/src/storages/system_store.dart';
-import 'package:task1/src/ui/profile/change_profile.dart';
+import 'package:task1/src/ui/test.dart';
 import 'package:task1/src/utils/utils.dart';
+
+import '../models/detail_user_model.dart';
 
 class EditProfileBloc {
   final _myPage = store<MyPageStore>();
   final listPicker = store<SystemStore>().serverState.userProfileList;
 
-  final Profile profile;
 
   var profileUpdate = Profile();
   final isChanged = Bloc<bool>(initialValue: false);
@@ -28,12 +30,6 @@ class EditProfileBloc {
   List<num> viewStatus;
   num isMain;
 
-  EditProfileBloc(this.profile) {
-    moodStatus.value = TextEditingValue(text: profile.moodStatus ?? '');
-    hobby.value = TextEditingValue(text: profile.hobby ?? '');
-    favoritePlace.value = TextEditingValue(text: profile.favoritePlace ?? '');
-    firstPlace.value = TextEditingValue(text: profile.firstPlace ?? '');
-  }
 
   final loading = Bloc<bool>(initialValue: false);
 
@@ -104,128 +100,6 @@ class EditProfileBloc {
   final favoritePlace = TextEditingController();
   final firstPlace = TextEditingController();
 
-  listenStream() {
-    email.addListener(() {
-      if (email.value?.text != profile.email) {
-        profileUpdate.email = email.value.text;
-        isChanged.add(true);
-      }
-    });
-    moodStatus.addListener(() {
-      if (moodStatus.value?.text != profile.moodStatus) {
-        profileUpdate.moodStatus = moodStatus.value.text;
-        isChanged.add(true);
-      }
-    });
-    _statusController.stream.listen((text) {
-      if (text != profile.userStatus) {
-        profileUpdate.userStatus = text;
-        isChanged.add(true);
-      }
-    });
-    _areaStream.stream.listen((data) {
-      if (data.value != profile.area?.value) {
-        profileUpdate.area = data;
-        isChanged.add(true);
-      }
-    });
-    _heightStream.stream.listen((data) {
-      if (data.value != profile.height?.value) {
-        profileUpdate.height = data;
-        isChanged.add(true);
-      }
-    });
-    _roommateStream.stream.listen((data) {
-      if (data.value != profile.roommate?.value) {
-        profileUpdate.roommate = data;
-        isChanged.add(true);
-      }
-    });
-    _birthplaceStream.stream.listen((data) {
-      if (data.value != profile.birthplace?.value) {
-        profileUpdate.birthplace = data;
-        isChanged.add(true);
-      }
-    });
-    _relationshipStatusStream.stream.listen((data) {
-      if (data.value != profile.relationshipStatus?.value) {
-        profileUpdate.relationshipStatus = data;
-        isChanged.add(true);
-      }
-    });
-    _childStream.stream.listen((data) {
-      if (data.value != profile.child?.value) {
-        profileUpdate.child = data;
-        isChanged.add(true);
-      }
-    });
-    _educationStream.stream.listen((data) {
-      if (data.value != profile.education?.value) {
-        profileUpdate.education = data;
-        isChanged.add(true);
-      }
-    });
-    _jobStream.stream.listen((data) {
-      if (data.value != profile.job?.value) {
-        profileUpdate.job = data;
-        isChanged.add(true);
-      }
-    });
-    _incomeStream.stream.listen((data) {
-      if (data.value != profile.income?.value) {
-        profileUpdate.income = data;
-        isChanged.add(true);
-      }
-    });
-    _holidaysStream.stream.listen((data) {
-      if (data.value != profile.holidays?.value) {
-        profileUpdate.holidays = data;
-        isChanged.add(true);
-      }
-    });
-    _drinkingStream.stream.listen((data) {
-      if (data.value != profile.drinking?.value) {
-        profileUpdate.drinking = data;
-        isChanged.add(true);
-      }
-    });
-    _smokingStream.stream.listen((data) {
-      if (data.value != profile.smoking?.value) {
-        profileUpdate.smoking = data;
-        isChanged.add(true);
-      }
-    });
-    hobby.addListener(() {
-      if (hobby.value?.text != profile.hobby) {
-        profileUpdate.hobby = hobby.value.text;
-        isChanged.add(true);
-      }
-    });
-    favoritePlace.addListener(() {
-      if (favoritePlace.value?.text != profile.favoritePlace) {
-        profileUpdate.favoritePlace = favoritePlace.value.text;
-        isChanged.add(true);
-      }
-    });
-    firstPlace.addListener(() {
-      if (firstPlace.value?.text != profile.firstPlace) {
-        profileUpdate.firstPlace = firstPlace.value.text;
-        isChanged.add(true);
-      }
-    });
-    _meetingConditionStream.stream.listen((data) {
-      if (data.value != profile.meetingCondition?.value) {
-        profileUpdate.meetingCondition = data;
-        isChanged.add(true);
-      }
-    });
-    _purposeStream.stream.listen((data) {
-      if (data.value != profile.purpose?.value) {
-        profileUpdate.purpose = data;
-        isChanged.add(true);
-      }
-    });
-  }
 
   Future updateProfile(
       Profile profile,
@@ -259,6 +133,20 @@ class EditProfileBloc {
     }
   }
 
+  Future checkNGWordAndUpdateProfile(
+      Function onSuccess, void Function() onNGWordsFound) async {
+    if (isChanged.value) {
+      if (NGWords.check(moodStatus.text, NGWords.ngWordsList) ||
+          NGWords.check(cachedStatus, NGWords.ngWordsList)) {
+        onNGWordsFound?.call();
+        return;
+      }
+      loading.add(true);
+      await _myPage.updateProfile(profileUpdate.toJson(), onSuccess: onSuccess);
+      isChanged.add(false);
+      loading.add(false);
+    }
+  }
 
   Future updateImage(Function onSuccess) async {
     if (images != null) {
@@ -271,6 +159,7 @@ class EditProfileBloc {
   }
 
   Future getImage(num position) async {
+    print("okokok");
     if (await CheckPermission.photos) {
       PickedFile imagePicker = await Utils.getImageFromGallery();
 
@@ -293,7 +182,7 @@ class EditProfileBloc {
       print(image.lengthSync());
       print(newImage.lengthSync());
 
-      if (images == null) images = List(ChangeProfile.numberAvatar);
+      if (images == null) images = List(EditProfileScreen.numberAvatar);
 
       images[position] = newImage; //image;
       imageUrl.add(images);

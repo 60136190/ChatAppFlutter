@@ -172,6 +172,16 @@ class SocketIo {
 
   }
 
+  setReadMessagea(Message message) {
+    socket.emit('client-chat-receive-ok', [
+      {
+        'u_id': message.uID,
+        'time': message.timeNotConvert,
+      },
+      print('send read message::INSIDE-----------'),
+    ]);
+
+  }
   setOpenImageMessage(Message message) {
     pPrint('open image status' + message.toString());
     socket.emit('client-chat-open-ok', [

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
@@ -11,10 +12,10 @@ import 'package:task1/src/apis/push_token_api.dart';
 import 'package:task1/src/blocs/bloc.dart';
 import 'package:task1/src/models/device_model.dart';
 import 'package:task1/src/models/server_state_model.dart';
+import 'package:task1/src/services/setup_firebase.dart';
 import 'package:task1/src/services/socket_io_client.dart';
 import 'package:task1/src/storages/store.dart';
 import 'package:task1/src/models/message_model.dart' as MessageModel;
-
 import 'message_store.dart';
 
 class SystemStore {
@@ -43,9 +44,9 @@ class SystemStore {
   }
 
   void init() async {
-    // await Firebase.initializeApp();
+    await Firebase.initializeApp();
     await currentDevice.init();
-    // await SetupFirebase().configPushNotification();
+    await SetupFirebase().configPushNotification();
   }
 
   void configSocketListen() {

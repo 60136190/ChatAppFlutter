@@ -4,10 +4,13 @@ import 'package:task1/src/services/socket_io_client.dart';
 import 'package:task1/src/storages/store.dart';
 import 'package:task1/src/ui/auth/login_screen.dart';
 import 'package:task1/src/ui/auth/register_screen.dart';
+import 'package:task1/src/ui/point/point_screen.dart';
+import 'package:task1/src/ui/start_screen.dart';
 
 class Routes {
   static const String appNavigator = 'main';
   static const String loginScreen = 'login';
+  static const String startScreen = 'start';
   static const String registerScreen = 'register';
   static const String registerPhoneNumberScreen = 'registerPhoneNumber';
   static const String verifyPhoneNumberScreen = 'verifyPhoneNumber';
@@ -64,6 +67,8 @@ class Routes {
       case registerScreen:
         return MaterialPageRoute(builder: (context) => RegisterScreen());
 
+      case startScreen:
+        return MaterialPageRoute(builder: (context) => StartScreen());
       // case appNavigator:
       //   return MaterialPageRoute(builder: (context) => AppNavigator());
       //
@@ -152,8 +157,8 @@ class Routes {
       // case variousSettingScreen:
       //   return MaterialPageRoute(builder: (context) => VariousSettingScreen());
       //
-      // case addPointScreen:
-      //   return MaterialPageRoute(builder: (context) => AddPointScreen());
+      case addPointScreen:
+        return MaterialPageRoute(builder: (context) => PointScreen());
       //
       // case contactScreen:
       //   return MaterialPageRoute(builder: (context) => ContactScreen());

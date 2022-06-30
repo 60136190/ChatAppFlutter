@@ -10,13 +10,13 @@ class Gift {
   final int receivedPoint;
 
   Gift({
-     this.id,
+    @required this.id,
     this.name,
-     this.image,
-     this.imageShow,
+    @required this.image,
+    @required this.imageShow,
     this.status,
-     this.spentPoint,
-     this.receivedPoint,
+    @required this.spentPoint,
+    @required this.receivedPoint,
   });
 
   static List<Gift> listFormJson(Map json) {

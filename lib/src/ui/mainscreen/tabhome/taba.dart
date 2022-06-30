@@ -31,7 +31,7 @@ class _TabA extends State<TabA> {
   String socket_jwt;
   _nameRetriever() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-      socket_jwt = prefs.getString('socket_jwt');
+    socket_jwt = prefs.getString('socket_jwt');
   }
   //--------------------
   @override
@@ -39,77 +39,73 @@ class _TabA extends State<TabA> {
     var listUserController = ListUserController(ListUserRespository());
     return Scaffold(
       body: FutureBuilder<List<Result>>(
-            future: listUserController.fetchListUser(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                /////----------------
-               // SocketIo().createSocket(socket_jwt.toString());
-                return GridView.builder(
-                    itemCount: snapshot.data?.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                    itemBuilder: (context, index) {
-                      return  Card(
-                          semanticContainer: true,
-                          elevation: 1,
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 130,
-                                child: Material(
-                                  child: InkWell(
-                                    onTap: () => {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => DetailScreen(text: '${snapshot.data[index].id}'),)),
-                                    },
-                                    child:ClipRRect(
-                                      child: Image.network(
-                                        '${snapshot.data[index].avatarUrl}',
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
+        future: listUserController.fetchListUser(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            /////----------------
+            // SocketIo().createSocket(socket_jwt.toString());
+            return GridView.builder(
+                itemCount: snapshot.data?.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                itemBuilder: (context, index) {
+                  return  Card(
+                    semanticContainer: true,
+                    elevation: 1,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 130,
+                          child: Material(
+                            child: InkWell(
+                              onTap: () => {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => DetailScreen(userChatId: '${snapshot.data[index].id}', userChatCode:'${snapshot.data[index].userCode}'),)),                              },
+                              child:ClipRRect(
+                                child: Image.network(
+                                  '${snapshot.data[index].avatarUrl}',
+                                  fit: BoxFit.fill,
                                 ),
                               ),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                  margin: EdgeInsets.only(left: 5, top: 1, bottom: 1),
-                                  child: Text("${snapshot.data[index].displayname}",
-                                      style: TextStyle(
-                                          color: kPink,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                  margin: EdgeInsets.only(left: 5, top: 1, bottom: 1),
-                                  child: Text(
-                                    "${snapshot.data[index].displayName}",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                      );
-                    }
-                );
-              } else if (snapshot.hasError) {
-                return Text("Error");
-              }
-              return Center(child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(kPink),
-              ));
-            },
-          ),
-      );
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: EdgeInsets.only(left: 5, top: 1, bottom: 1),
+                            child: Text("${snapshot.data[index].displayname}",
+                                style: TextStyle(
+                                    color: kPink,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: EdgeInsets.only(left: 5, top: 1, bottom: 1),
+                            child: Text(
+                              "${snapshot.data[index].displayName}",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+            );
+          } else if (snapshot.hasError) {
+            return Text("Error");
+          }
+          return Center(child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(kPink),
+          ));
+        },
+      ),
+    );
   }
 }
-
-
-

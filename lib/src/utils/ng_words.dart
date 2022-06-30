@@ -6,7 +6,7 @@ List<String> messageTemplate;
 List<String> keijibanPost;
 List<String> favoritePlace;
 List<String> firstDateLocation;
-List<String> ngWordsList;
+List<String>  ngWordsList;
 
 void initFromAPIData(Map<String, dynamic> apiData) {
   defaultReplacementToken = apiData['data']['ng_words_replace'];

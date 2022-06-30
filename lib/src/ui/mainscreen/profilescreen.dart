@@ -28,6 +28,7 @@ import 'package:task1/src/ui/profile/foot.dart';
 import 'package:task1/src/ui/profile/setting.dart';
 import 'package:task1/src/ui/secondscreen.dart';
 import 'package:http/http.dart' as http;
+import 'package:task1/src/ui/test.dart';
 import 'package:task1/src/widgets/build_widget.dart';
 import 'package:task1/src/widgets/custom_switch.dart';
 import 'package:task1/src/widgets/loading_indicator.dart';
@@ -277,7 +278,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => ChangeProfile(idUser: '${snapshot.data.data.id}')));
+                                              builder: (context) => EditProfileScreen(idUser: '${snapshot.data.data.id}')));
+
                                     },
                                     child: Container(
                                       margin: EdgeInsets.only(
